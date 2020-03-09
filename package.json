@@ -1,0 +1,46 @@
+{
+  "name": "@homefully/ts-lib-template",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/index.js",
+  "files": [
+    "build/**",
+    "src/**"
+  ],
+  "scripts": {
+    "test": "tsc --noEmit && jest",
+    "test:ci": "jest --reporters=default --reporters=jest-github-actions-reporter",
+    "test:watch": "jest --watch",
+    "lint": "prettier -c src/**/*.{ts,json,js} test/**/*.{ts,json,js}",
+    "lint:fix": "prettier --write src/**/*.{ts,json,js} test/**/*.{ts,json,js}",
+    "build": "tsc"
+  },
+  "author": "homefully",
+  "repository": {
+    "type": "git",
+    "url": "github:homefully/ts-lib-template"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^25.1.4",
+    "auto": "^9.19.2",
+    "jest": "^25.1.0",
+    "jest-github-actions-reporter": "^1.0.2",
+    "prettier": "^1.19.1",
+    "ts-jest": "^25.2.1",
+    "typescript": "^3.8.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "collectCoverage": true,
+    "roots": [
+      "test"
+    ]
+  },
+  "prettier": {
+    "semi": false
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
+}

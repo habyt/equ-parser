@@ -1,0 +1,65 @@
+name: Pull Request
+
+on:
+  pull_request:
+    types: [ opened, synchronize ]
+
+jobs:
+    check-version-increase:
+        name: Check version tag
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v1
+            -   uses: actions/setup-node@v1
+                with:
+                    node-version: 12
+                    registry-url: https://npm.pkg.github.com/
+            -   run: npx auto pr-check --url https://github.com/$GITHUB_REPOSITORY
+                env:
+                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    publish-canary:
+        name: Publish a Canary version
+        needs: check-version-increase
+        runs-on: ubuntu-latest
+        if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
+        steps:
+            - uses: actions/checkout@v1
+            - name: Prepare repository
+              run: |
+                  git checkout ${GITHUB_HEAD_REF#refs/heads/} --
+                  git remote rm origin
+                  git remote add origin https://homefully-bot:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
+                  git fetch origin --tags
+                  git branch --set-upstream-to origin/${GITHUB_HEAD_REF#refs/heads/} ${GITHUB_HEAD_REF#refs/heads/}
+              env:
+                  GITHUB_TOKEN: ${{secrets.GITHUB_BOT_TOKEN}}
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12
+                  registry-url: https://npm.pkg.github.com/
+                  always-auth: true
+                  scope: '@homefully'
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+            - uses: actions/cache@v1
+              id: cache-modules
+              with:
+                  path: node_modules
+                  key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+            - uses: actions/cache@v1
+              if: steps.cache-modules.outputs.cache-hit != 'true'
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-node-global
+            - run: npm ci
+              if: steps.cache-modules.outputs.cache-hit != 'true'
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.GITHUB_BOT_TOKEN}}
+            - run: npm run build
+            - run: npx auto shipit
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_BOT_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.GITHUB_BOT_TOKEN }}
+                  NODE_AUTH_TOKEN: ${{secrets.GITHUB_BOT_TOKEN}}
