@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`lexer should lex the example correctly 1`] = `
+Array [
+  Object {
+    "str": "name.first",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": "foo",
+    "type": "string",
+  },
+  Object {
+    "str": "|",
+    "type": "or",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": "bar",
+    "type": "string",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": "|",
+    "type": "or",
+  },
+  Object {
+    "str": "email",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "ct",
+    "type": "filterCt",
+  },
+  Object {
+    "str": "foo",
+    "type": "string",
+  },
+  Object {
+    "str": ",",
+    "type": "and",
+  },
+  Object {
+    "str": "ct",
+    "type": "filterCt",
+  },
+  Object {
+    "str": "bar",
+    "type": "string",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": ",",
+    "type": "and",
+  },
+  Object {
+    "str": "age",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "(",
+    "type": "bundleStart",
+  },
+  Object {
+    "str": "gt",
+    "type": "filterGt",
+  },
+  Object {
+    "str": "4.5",
+    "type": "number",
+  },
+  Object {
+    "str": ",",
+    "type": "and",
+  },
+  Object {
+    "str": "lt",
+    "type": "filterLt",
+  },
+  Object {
+    "str": "-10",
+    "type": "number",
+  },
+  Object {
+    "str": ")",
+    "type": "bundleEnd",
+  },
+  Object {
+    "str": "|",
+    "type": "or",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": "15",
+    "type": "number",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": "",
+    "type": "eof",
+  },
+]
+`;
