@@ -1,5 +1,5 @@
 {
-  "name": "@homefully/ts-lib-template",
+  "name": "@homefully/equ-parser",
   "version": "0.0.1",
   "description": "",
   "main": "build/index.js",
@@ -18,7 +18,7 @@
   "author": "homefully",
   "repository": {
     "type": "git",
-    "url": "github:homefully/ts-lib-template"
+    "url": "github:homefully/equ-parser"
   },
   "license": "ISC",
   "devDependencies": {
