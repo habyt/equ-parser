@@ -11,7 +11,6 @@ jobs:
             -   uses: actions/setup-node@master
                 with:
                     node-version: 12
-                    registry-url: 'https://registry.npmjs.org'
             -   run: npm audit
     test:
         name: Test
@@ -21,11 +20,6 @@ jobs:
             -   uses: actions/setup-node@master
                 with:
                     node-version: 12
-                    registry-url: https://npm.pkg.github.com
-                    scope: '@homefully'
-                    always-auth: true
-                env:
-                    NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
             -   uses: actions/cache@v1
                 id: cache-modules
                 with:
@@ -38,8 +32,6 @@ jobs:
                     key: ${{ runner.os }}-node-global
             -   run: npm ci
                 if: steps.cache-modules.outputs.cache-hit != 'true'
-                env:
-                    NODE_AUTH_TOKEN: ${{secrets.GITHUB_BOT_TOKEN}}
             -   run: npm run lint
             -   run: npm run test:ci
             -   run: npm run build
@@ -50,23 +42,9 @@ jobs:
         if: "contains(github.ref, 'master') && !contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
         steps:
             -   uses: actions/checkout@v1
-            -   name: Prepare repository
-                run: |
-                    git checkout ${GITHUB_REF##*/} --
-                    git remote rm origin
-                    git remote add origin https://homefully-bot:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
-                    git fetch origin --tags
-                    git branch --set-upstream-to origin/${GITHUB_REF##*/} ${GITHUB_REF##*/}
-                env:
-                    GITHUB_TOKEN: ${{secrets.GITHUB_BOT_TOKEN}}
             -   uses: actions/setup-node@v1
                 with:
                     node-version: 12
-                    registry-url: https://npm.pkg.github.com/
-                    always-auth: true
-                    scope: '@homefully'
-                env:
-                    NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
             -   uses: actions/cache@v1
                 id: cache-modules
                 with:
@@ -79,13 +57,11 @@ jobs:
                     key: ${{ runner.os }}-node-global
             -   run: npm ci
                 if: steps.cache-modules.outputs.cache-hit != 'true'
-                env:
-                    NODE_AUTH_TOKEN: ${{secrets.GITHUB_BOT_TOKEN}}
             -   run: npm run build
             -   run: npx auto shipit
                 env:
                     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                    NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                    NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+                    NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 
