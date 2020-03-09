@@ -304,7 +304,7 @@ function lexToken(tokenValue: string, token: Token, next: StateFn): StateFn {
     }
 }
 
-export function lexing(str: string): Array<Item> {
+export function lex(str: string): Array<Item> {
     const lexer = new Lexer(str)
 
     let state: StateFn = lexFilters
