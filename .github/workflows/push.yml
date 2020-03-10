@@ -45,6 +45,11 @@ jobs:
             -   uses: actions/setup-node@v1
                 with:
                     node-version: 12
+            -   name: Prepare repository
+                run: |
+                    git checkout ${GITHUB_REF##*/} --
+                    git fetch origin --tags
+                    git branch --set-upstream-to origin/${GITHUB_REF##*/} ${GITHUB_REF##*/}
             -   uses: actions/cache@v1
                 id: cache-modules
                 with:
