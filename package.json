@@ -40,5 +40,9 @@
   "prettier": {
     "semi": false
   },
+  "publishConfig": {
+      "registry": "https://registry.npmjs.org/",
+      "access": "public"
+  },
   "dependencies": {}
 }
