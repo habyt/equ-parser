@@ -89,7 +89,7 @@ Array [
 ]
 `;
 
-exports[`equ should parse new operators with booleans 1`] = `
+exports[`equ should parse exist operator with booleans 1`] = `
 Array [
   Object {
     "expressions": Array [

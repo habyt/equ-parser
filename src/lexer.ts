@@ -130,13 +130,12 @@ class LexerContext {
     }
 
     acceptExact(str: string): boolean {
-   const match = this.input.substring(this.pos).startsWith(str)
-   if (match) {
-       this.pos += str.length
-       this.width = str.length
-    }
-    return match
-}
+        const match = this.input.substring(this.pos).startsWith(str)
+        if (match) {
+            this.pos += str.length
+            this.width = str.length
+        }
+        return match
     }
 
     acceptRunUntil(...stops: Array<string>) {
