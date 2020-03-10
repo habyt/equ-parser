@@ -10,7 +10,7 @@ describe("lexer", () => {
     })
 
     it("should throw an EQUParsingError on error", () => {
-         expect(() => lex("ioi[")).toThrowErrorMatchingSnapshot()
+        expect(() => lex("ioi[")).toThrowErrorMatchingSnapshot()
     })
 
     it("should throw a parsing error on unended string values", () => {
@@ -54,6 +54,8 @@ describe("lexer", () => {
     })
 
     it("should throw an error on invalid combinator", () => {
-        expect(() => lex("path[eq:123]:path[eq:123]")).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:123]:path[eq:123]")
+        ).toThrowErrorMatchingSnapshot()
     })
 })
