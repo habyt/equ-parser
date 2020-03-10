@@ -9,7 +9,7 @@ describe("equ", () => {
         expect(result).toMatchSnapshot()
     })
 
-    it("should parse new operators with booleans", () => {
+    it("should parse exist operator with booleans", () => {
         const result = parse("path[ex:true],path2[ex:false]")
 
         expect(result).toMatchSnapshot()
