@@ -246,11 +246,9 @@ function parseAfterExpression(p: Parser): StateFn {
     const next = p.next()
 
     if (next.type === "filtersEnd") {
-        let op = p.expressionOperatorStack.pop()
-        while (op !== undefined) {
-            p.pushExpressionItem(op)
-            op = p.expressionOperatorStack.pop()
-        }
+        const currentFilterOperand = p.currentFilterOperand() ?? parseError()
+        currentFilterOperand.expressions.push(...p.expressionOperatorStack.reverse())
+        p.expressionOperatorStack = []
 
         return parseAfterFilter
     }
@@ -296,11 +294,8 @@ function parseAfterFilter(p: Parser): StateFn {
     const next = p.next()
 
     if (next.type === "eof") {
-        let op = p.popFilterOperator()
-        while (op !== undefined) {
-            p.pushFilterItem(op)
-            op = p.popFilterOperator()
-        }
+        p.parsedItems.push(...p.filterOperatorStack.reverse())
+        p.filterOperatorStack = []
 
         return undefined
     }
