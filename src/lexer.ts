@@ -43,7 +43,7 @@ const tokenValidPath =
 const tokenValidOperator = "abcdefghijklmnopqrstuvwxyz"
 const tokenValidNumberStart = "+-.0123456789"
 
-type StateFn = ((lexer: Lexer) => StateFn) | undefined
+type StateFn = ((ctx: LexerContext) => StateFn) | undefined
 
 export class EQUParsingError extends Error {
     constructor(msg?: string) {
@@ -55,7 +55,7 @@ function lexError(msg?: string): never {
     throw new EQUParsingError(msg)
 }
 
-class Lexer {
+class LexerContext {
     input: string
     pos: number = 0
     items: Array<Item> = []
@@ -152,127 +152,127 @@ export type Item = {
     type: Token
 }
 
-function lexFilters(l: Lexer): StateFn {
-    if (l.peek() === tokenBundleStart) {
+function lexFilters(ctx: LexerContext): StateFn {
+    if (ctx.peek() === tokenBundleStart) {
         return lexToken(tokenBundleStart, "bundleStart", lexFilters)
     }
 
-    l.acceptRun(tokenValidPath)
-    if (l.pos <= l.start) {
-        throw new EQUParsingError("expected path, but got " + l.rest())
+    ctx.acceptRun(tokenValidPath)
+    if (ctx.pos <= ctx.start) {
+        throw new EQUParsingError("expected path, but got " + ctx.rest())
     }
 
-    l.emit("path")
+    ctx.emit("path")
 
-    if (l.peek() !== tokenFiltersStart) {
-        throw new EQUParsingError("expected '[', but got " + l.rest())
+    if (ctx.peek() !== tokenFiltersStart) {
+        throw new EQUParsingError("expected '[', but got " + ctx.rest())
     }
 
     return lexToken(tokenFiltersStart, "filtersStart", lexInsideFilters)
 }
 
-function lexInsideFilters(l: Lexer): StateFn {
-    if (l.peek() === tokenBundleStart) {
+function lexInsideFilters(ctx: LexerContext): StateFn {
+    if (ctx.peek() === tokenBundleStart) {
         return lexToken(tokenBundleStart, "bundleStart", lexInsideFilters)
     }
 
-    l.acceptRun(tokenValidOperator)
-    const nextFilter = l.current()
+    ctx.acceptRun(tokenValidOperator)
+    const nextFilter = ctx.current()
     const filterType =
         filters[nextFilter] ??
         lexError("expected filter type, got " + nextFilter)
-    l.emit(filterType)
+    ctx.emit(filterType)
 
-    if (l.next() !== tokenFilterIs) {
-        lexError("expected " + tokenFilterIs + " but got " + l.current())
+    if (ctx.next() !== tokenFilterIs) {
+        lexError("expected " + tokenFilterIs + " but got " + ctx.current())
     }
 
-    l.ignore()
+    ctx.ignore()
 
     return lexFilterValue
 }
 
-function lexFilterValue(l: Lexer): StateFn {
-    const next = l.peek()
+function lexFilterValue(ctx: LexerContext): StateFn {
+    const next = ctx.peek()
 
     if (tokenValidNumberStart.indexOf(next) >= 0) {
         return lexNumberValue
     }
 
     if (next === '"') {
-        l.next()
-        l.ignore()
+        ctx.next()
+        ctx.ignore()
         return lexStringValue
     }
 
-    lexError("expected filter value but got " + l.rest())
+    lexError("expected filter value but got " + ctx.rest())
 }
 
-function lexStringValue(l: Lexer): StateFn {
+function lexStringValue(ctx: LexerContext): StateFn {
     while (true) {
-        const found = l.acceptRunUntil("\\", '"')
+        const found = ctx.acceptRunUntil("\\", '"')
         if (!found) {
-            lexError("expected string to end, but got " + l.rest())
+            lexError("expected string to end, but got " + ctx.rest())
         }
 
-        const next = l.peek()
+        const next = ctx.peek()
         if (next === '"') {
-            l.emit("string")
+            ctx.emit("string")
 
-            l.next()
-            l.ignore()
+            ctx.next()
+            ctx.ignore()
             return lexAfterFilterValue
         }
 
         // if we're here next must be a \ because of acceptRunUntil
         assert(next === "\\")
-        l.next()
+        ctx.next()
 
-        const escapedSymbol = l.peek()
+        const escapedSymbol = ctx.peek()
 
         if (escapedSymbol === "\\" || escapedSymbol === '"') {
-            l.next()
+            ctx.next()
         } else {
             lexError("invalid escape sequence: \\" + escapedSymbol)
         }
     }
 }
 
-function lexNumberValue(l: Lexer): StateFn {
-    l.accept("+-")
+function lexNumberValue(ctx: LexerContext): StateFn {
+    ctx.accept("+-")
 
-    let decimalOccured = l.accept(".")
+    let decimalOccured = ctx.accept(".")
 
-    l.acceptRun("0123456789")
-    if (l.accept(".")) {
+    ctx.acceptRun("0123456789")
+    if (ctx.accept(".")) {
         if (decimalOccured) {
-            lexError("invalid number: " + l.current())
+            lexError("invalid number: " + ctx.current())
         }
 
-        l.acceptRun("0123456789")
+        ctx.acceptRun("0123456789")
     }
 
-    l.emit("number")
+    ctx.emit("number")
     return lexAfterFilterValue
 }
 
-function lexAfterFilterValue(l: Lexer): StateFn {
-    const next = l.next()
+function lexAfterFilterValue(ctx: LexerContext): StateFn {
+    const next = ctx.next()
     switch (next) {
         case tokenOr: {
-            l.emit("or")
+            ctx.emit("or")
             break
         }
         case tokenAnd: {
-            l.emit("and")
+            ctx.emit("and")
             break
         }
         case tokenFiltersEnd: {
-            l.backup()
+            ctx.backup()
             return lexToken(tokenFiltersEnd, "filtersEnd", lexAfterFilter)
         }
         case tokenBundleEnd: {
-            l.backup()
+            ctx.backup()
             return lexToken(tokenBundleEnd, "bundleEnd", lexAfterFilterValue)
         }
     }
@@ -280,25 +280,25 @@ function lexAfterFilterValue(l: Lexer): StateFn {
     return lexInsideFilters
 }
 
-function lexAfterFilter(l: Lexer): StateFn {
-    const next = l.next()
+function lexAfterFilter(ctx: LexerContext): StateFn {
+    const next = ctx.next()
 
     if (next === "") {
-        l.emit("eof")
+        ctx.emit("eof")
         return undefined
     }
 
     switch (next) {
         case tokenOr: {
-            l.emit("or")
+            ctx.emit("or")
             return lexFilters
         }
         case tokenAnd: {
-            l.emit("and")
+            ctx.emit("and")
             return lexFilters
         }
         case tokenBundleEnd: {
-            l.backup()
+            ctx.backup()
             return lexToken(tokenBundleEnd, "bundleEnd", lexAfterFilter)
         }
     }
@@ -307,9 +307,9 @@ function lexAfterFilter(l: Lexer): StateFn {
 }
 
 function lexToken(tokenValue: string, token: Token, next: StateFn): StateFn {
-    return (lexer: Lexer) => {
-        lexer.pos += tokenValue.length
-        lexer.emit(token)
+    return (ctx: LexerContext) => {
+        ctx.pos += tokenValue.length
+        ctx.emit(token)
         return next
     }
 }
@@ -319,7 +319,7 @@ export type LexerOptions = {
 }
 
 export function lex(str: string): Array<Item> {
-    const lexer = new Lexer(str)
+    const lexer = new LexerContext(str)
 
     let state: StateFn = lexFilters
     while (state !== undefined) {

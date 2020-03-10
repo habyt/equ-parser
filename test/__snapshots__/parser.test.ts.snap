@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser should parse the example 1`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": "foo",
+        "valueType": "string",
+      },
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": "bar",
+        "valueType": "string",
+      },
+      Object {
+        "operator": "or",
+        "type": "expressionOperator",
+      },
+    ],
+    "path": "name.first",
+    "type": "operand",
+  },
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "ct",
+        "type": "expressionOperand",
+        "value": "foo",
+        "valueType": "string",
+      },
+      Object {
+        "expressionType": "ct",
+        "type": "expressionOperand",
+        "value": "bar",
+        "valueType": "string",
+      },
+      Object {
+        "operator": "and",
+        "type": "expressionOperator",
+      },
+    ],
+    "path": "email",
+    "type": "operand",
+  },
+  Object {
+    "operator": "or",
+    "type": "operator",
+  },
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "gt",
+        "type": "expressionOperand",
+        "value": 4.5,
+        "valueType": "number",
+      },
+      Object {
+        "expressionType": "lt",
+        "type": "expressionOperand",
+        "value": -10,
+        "valueType": "number",
+      },
+      Object {
+        "operator": "and",
+        "type": "expressionOperator",
+      },
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": 15,
+        "valueType": "number",
+      },
+      Object {
+        "operator": "or",
+        "type": "expressionOperator",
+      },
+    ],
+    "path": "age",
+    "type": "operand",
+  },
+  Object {
+    "operator": "and",
+    "type": "operator",
+  },
+]
+`;

@@ -27,7 +27,7 @@ function parseError(msg?: any): never {
     throw new EQUParsingError("unimplemented " + JSON.stringify(msg))
 }
 
-type StateFn = ((p: Parser) => StateFn) | undefined
+type StateFn = ((ctx: ParserContext) => StateFn) | undefined
 
 type FilterOperatorType = "and" | "or" | "bundleStart" | "bundleEnd"
 
@@ -63,7 +63,7 @@ export type ExpressionOperator = {
 
 export type ExpressionItem = ExpressionOperator | ExpressionOperand
 
-class Parser {
+class ParserContext {
     items: Array<Item>
     parsedItems: Array<ParseItem> = []
 
@@ -128,15 +128,15 @@ class Parser {
     }
 }
 
-function parsePath(parser: Parser): StateFn {
-    const next = parser.next()
+function parsePath(ctx: ParserContext): StateFn {
+    const next = ctx.next()
 
     if (next.type === "bundleStart") {
         return parseFilterBundleStart
     }
 
     if (next.type === "path") {
-        parser.pushFilterItem({
+        ctx.pushFilterItem({
             type: "operand",
             path: next.str,
             expressions: []
@@ -148,8 +148,8 @@ function parsePath(parser: Parser): StateFn {
     parseError(next)
 }
 
-function parseFilterBundleStart(p: Parser): StateFn {
-    p.filterOperatorStack.push({
+function parseFilterBundleStart(ctx: ParserContext): StateFn {
+    ctx.filterOperatorStack.push({
         type: "operator",
         operator: "bundleStart"
     })
@@ -157,8 +157,8 @@ function parseFilterBundleStart(p: Parser): StateFn {
     return parsePath
 }
 
-function parseFiltersStart(parser: Parser): StateFn {
-    const next = parser.next()
+function parseFiltersStart(ctx: ParserContext): StateFn {
+    const next = ctx.next()
     if (next.type === "filtersStart") {
         return parseExpression
     }
@@ -166,8 +166,8 @@ function parseFiltersStart(parser: Parser): StateFn {
     parseError(next)
 }
 
-function parseExpression(parser: Parser): StateFn {
-    const expressionType = parser.next()
+function parseExpression(ctx: ParserContext): StateFn {
+    const expressionType = ctx.next()
 
     if (expressionType.type === "bundleStart") {
         return parseExpressionBundleStart
@@ -203,7 +203,7 @@ function parseExpression(parser: Parser): StateFn {
             parseError(expressionType)
     }
 
-    const value = parser.next()
+    const value = ctx.next()
     let valueType: "string" | "number" = "string"
     switch (value.type) {
         case "string": {
@@ -223,7 +223,7 @@ function parseExpression(parser: Parser): StateFn {
         parsedValue = Number(value.str)
     }
 
-    parser.pushExpressionItem({
+    ctx.pushExpressionItem({
         type: "expressionOperand",
         expressionType: expressionOperator,
         valueType,
@@ -233,8 +233,8 @@ function parseExpression(parser: Parser): StateFn {
     return parseAfterExpression
 }
 
-function parseExpressionBundleStart(p: Parser): StateFn {
-    p.expressionOperatorStack.push({
+function parseExpressionBundleStart(ctx: ParserContext): StateFn {
+    ctx.expressionOperatorStack.push({
         type: "expressionOperator",
         operator: "bundleStart"
     })
@@ -242,15 +242,15 @@ function parseExpressionBundleStart(p: Parser): StateFn {
     return parseExpression
 }
 
-function parseAfterExpression(p: Parser): StateFn {
-    const next = p.next()
+function parseAfterExpression(ctx: ParserContext): StateFn {
+    const next = ctx.next()
 
     if (next.type === "filtersEnd") {
-        const currentFilterOperand = p.currentFilterOperand() ?? parseError()
+        const currentFilterOperand = ctx.currentFilterOperand() ?? parseError()
         currentFilterOperand.expressions.push(
-            ...p.expressionOperatorStack.reverse()
+            ...ctx.expressionOperatorStack.reverse()
         )
-        p.expressionOperatorStack = []
+        ctx.expressionOperatorStack = []
 
         return parseAfterFilter
     }
@@ -261,30 +261,30 @@ function parseAfterExpression(p: Parser): StateFn {
             operator: next.type
         }
 
-        let currentTopExpression = p.topExpressionOperator()
+        let currentTopExpression = ctx.topExpressionOperator()
         while (
             currentTopExpression !== undefined &&
             expressionPrecedence(expressionOperator, currentTopExpression)
         ) {
-            const top = p.popExpressionOperator() ?? parseError()
-            p.pushExpressionItem(top)
-            currentTopExpression = p.topExpressionOperator()
+            const top = ctx.popExpressionOperator() ?? parseError()
+            ctx.pushExpressionItem(top)
+            currentTopExpression = ctx.topExpressionOperator()
         }
 
-        p.expressionOperatorStack.push(expressionOperator)
+        ctx.expressionOperatorStack.push(expressionOperator)
 
         return parseExpression
     }
 
     if (next.type === "bundleEnd") {
-        let op = p.popExpressionOperator()
+        let op = ctx.popExpressionOperator()
         while (op !== undefined) {
             if (op.operator === "bundleStart") {
                 break
             }
 
-            p.pushExpressionItem(op)
-            op = p.popExpressionOperator()
+            ctx.pushExpressionItem(op)
+            op = ctx.popExpressionOperator()
         }
         return parseAfterExpression
     }
@@ -292,12 +292,12 @@ function parseAfterExpression(p: Parser): StateFn {
     parseError(next)
 }
 
-function parseAfterFilter(p: Parser): StateFn {
-    const next = p.next()
+function parseAfterFilter(ctx: ParserContext): StateFn {
+    const next = ctx.next()
 
     if (next.type === "eof") {
-        p.parsedItems.push(...p.filterOperatorStack.reverse())
-        p.filterOperatorStack = []
+        ctx.parsedItems.push(...ctx.filterOperatorStack.reverse())
+        ctx.filterOperatorStack = []
 
         return undefined
     }
@@ -308,30 +308,30 @@ function parseAfterFilter(p: Parser): StateFn {
             operator: next.type
         }
 
-        let currentTopFilter = p.topFilterOperator()
+        let currentTopFilter = ctx.topFilterOperator()
         while (
             currentTopFilter !== undefined &&
             filterPrecedence(filterOperator, currentTopFilter)
         ) {
-            const top = p.popFilterOperator() ?? parseError()
-            p.pushFilterItem(top)
-            currentTopFilter = p.topFilterOperator()
+            const top = ctx.popFilterOperator() ?? parseError()
+            ctx.pushFilterItem(top)
+            currentTopFilter = ctx.topFilterOperator()
         }
 
-        p.filterOperatorStack.push(filterOperator)
+        ctx.filterOperatorStack.push(filterOperator)
 
         return parsePath
     }
 
     if (next.type === "bundleEnd") {
-        let op = p.popFilterOperator()
+        let op = ctx.popFilterOperator()
         while (op !== undefined) {
             if (op.operator === "bundleStart") {
                 break
             }
 
-            p.pushFilterItem(op)
-            op = p.popFilterOperator()
+            ctx.pushFilterItem(op)
+            op = ctx.popFilterOperator()
         }
         return parseAfterFilter
     }
@@ -340,7 +340,7 @@ function parseAfterFilter(p: Parser): StateFn {
 }
 
 export function parse(items: Array<Item>): Array<ParseItem> {
-    const parser = new Parser(items)
+    const parser = new ParserContext(items)
     let state: StateFn = parsePath
     while (state !== undefined) {
         state = state(parser)
