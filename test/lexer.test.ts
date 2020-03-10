@@ -17,6 +17,12 @@ describe("lexer", () => {
         expect(() => lex(`path[eq:"asd`)).toThrowErrorMatchingSnapshot()
     })
 
+    it("should lex booleans correctly", () => {
+        const result = lex(`path[ex:true],path2[ex:false]`)
+
+        expect(result).toMatchSnapshot()
+    })
+
     it("should lex bundles correctly", () => {
         const result = lex(`(path[eq:"asd"],path2[eq:"bdf"])`)
 

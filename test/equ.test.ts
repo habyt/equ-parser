@@ -8,4 +8,14 @@ describe("equ", () => {
 
         expect(result).toMatchSnapshot()
     })
+
+    it("should parse exist operator with booleans", () => {
+        const result = parse("path[ex:true],path2[ex:false]")
+
+        expect(result).toMatchSnapshot()
+    })
+
+    it("should throw an error on parsing ex operator without a boolean", () => {
+        expect(() => parse("path[ex:1]")).toThrowErrorMatchingSnapshot()
+    })
 })

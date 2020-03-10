@@ -1,4 +1,4 @@
-import { Item, EQUParsingError } from "./lexer"
+import { Item, EQUParsingError, filters } from "./lexer"
 
 function expressionPrecedence(
     a: ExpressionOperator,
@@ -27,10 +27,10 @@ type StateFn = ((ctx: ParserContext) => StateFn) | undefined
 
 type FilterOperatorType = "and" | "or" | "bundleStart" | "bundleEnd"
 
-type ExpressionType = "eq" | "gt" | "gte" | "lt" | "lte" | "ct"
+type ExpressionType = keyof typeof filters
 type ExpressionOperatorType = "and" | "or" | "bundleStart" | "bundleEnd"
 
-type ValueType = "number" | "string"
+type ValueType = "number" | "string" | "boolean"
 
 export type FilterOperator = {
     type: "operator"
@@ -49,7 +49,7 @@ export type ExpressionOperand = {
     type: "expressionOperand"
     expressionType: ExpressionType
     valueType: ValueType
-    value: string | number
+    value: string | number | boolean
 }
 
 export type ExpressionOperator = {
@@ -196,12 +196,24 @@ function parseExpression(ctx: ParserContext): StateFn {
             expressionOperator = "lte"
             break
         }
+        case "filterRgx": {
+            expressionOperator = "rgx"
+            break
+        }
+        case "filterEx": {
+            expressionOperator = "ex"
+            break
+        }
+        case "filterNeq": {
+            expressionOperator = "neq"
+            break
+        }
         default:
             parseError(expressionType)
     }
 
     const value = ctx.next()
-    let valueType: "string" | "number" = "string"
+    let valueType: ValueType = "string"
     switch (value.type) {
         case "string": {
             valueType = "string"
@@ -211,13 +223,39 @@ function parseExpression(ctx: ParserContext): StateFn {
             valueType = "number"
             break
         }
+        case "boolean": {
+            valueType = "boolean"
+            break
+        }
         default:
             parseError(value)
     }
 
-    let parsedValue: number | string = value.str
+    if (expressionOperator === "ex" && valueType !== "boolean") {
+        parseError(
+            "encountered ex operator with the value " +
+                value.str +
+                ", but it must be boolean"
+        )
+    }
+
+    let parsedValue: number | string | boolean = value.str
     if (value.type === "number") {
         parsedValue = Number(value.str)
+    }
+    if (value.type === "boolean") {
+        switch (value.str) {
+            case "true": {
+                parsedValue = true
+                break
+            }
+            case "false": {
+                parsedValue = false
+                break
+            }
+            default:
+                parseError("invalid boolean: " + value.str)
+        }
     }
 
     ctx.pushExpressionItem({

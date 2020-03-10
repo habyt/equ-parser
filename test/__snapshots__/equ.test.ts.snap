@@ -88,3 +88,38 @@ Array [
   },
 ]
 `;
+
+exports[`equ should parse exist operator with booleans 1`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "ex",
+        "type": "expressionOperand",
+        "value": true,
+        "valueType": "boolean",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "ex",
+        "type": "expressionOperand",
+        "value": false,
+        "valueType": "boolean",
+      },
+    ],
+    "path": "path2",
+    "type": "operand",
+  },
+  Object {
+    "operator": "and",
+    "type": "operator",
+  },
+]
+`;
+
+exports[`equ should throw an error on parsing ex operator without a boolean 1`] = `"encountered ex operator with the value 1, but it must be boolean"`;
