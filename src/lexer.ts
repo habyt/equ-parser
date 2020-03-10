@@ -11,6 +11,7 @@ export type Token =
     | "bundleEnd"
     | "string"
     | "number"
+    | "boolean"
     | "filterGt"
     | "filterLt"
     | "filterGte"
@@ -20,7 +21,6 @@ export type Token =
     | "filterRgx"
     | "filterEx"
     | "filterNeq"
-    | "filterNex"
 
 export const filters: { [k: string]: Token } = {
     eq: "filterEq",
@@ -31,8 +31,7 @@ export const filters: { [k: string]: Token } = {
     ct: "filterCt",
     rgx: "filterRgx",
     ex: "filterEx",
-    neq: "filterNeq",
-    nex: "filterNex"
+    neq: "filterNeq"
 }
 
 const tokenBundleStart = "("
@@ -50,6 +49,9 @@ const tokenValidPath =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._"
 const tokenValidOperator = "abcdefghijklmnopqrstuvwxyz"
 const tokenValidNumberStart = "+-.0123456789"
+
+const tokenTrue = "true"
+const tokenFalse = "false"
 
 type StateFn = ((ctx: LexerContext) => StateFn) | undefined
 
@@ -127,6 +129,17 @@ class LexerContext {
         this.backup()
     }
 
+    acceptExact(str: string): boolean {
+        for (let i = 0; i < str.length; i++) {
+            if (this.next() !== str[i]) {
+                this.backup()
+                return false
+            }
+        }
+
+        return true
+    }
+
     acceptRunUntil(...stops: Array<string>) {
         while (true) {
             const next = this.next()
@@ -202,6 +215,11 @@ function lexInsideFilters(ctx: LexerContext): StateFn {
 
 function lexFilterValue(ctx: LexerContext): StateFn {
     const next = ctx.peek()
+
+    if (ctx.acceptExact(tokenTrue) || ctx.acceptExact(tokenFalse)) {
+        ctx.emit("boolean")
+        return lexAfterFilterValue
+    }
 
     if (tokenValidNumberStart.indexOf(next) >= 0) {
         return lexNumberValue

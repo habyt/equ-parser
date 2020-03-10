@@ -29,6 +29,59 @@ Array [
 ]
 `;
 
+exports[`lexer should lex booleans correctly 1`] = `
+Array [
+  Object {
+    "str": "path",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "ex",
+    "type": "filterEx",
+  },
+  Object {
+    "str": "true",
+    "type": "boolean",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": ",",
+    "type": "and",
+  },
+  Object {
+    "str": "path2",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "ex",
+    "type": "filterEx",
+  },
+  Object {
+    "str": "false",
+    "type": "boolean",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": "",
+    "type": "eof",
+  },
+]
+`;
+
 exports[`lexer should lex bundles correctly 1`] = `
 Array [
   Object {

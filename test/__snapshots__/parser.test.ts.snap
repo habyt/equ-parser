@@ -77,8 +77,8 @@ Array [
       Object {
         "expressionType": "ex",
         "type": "expressionOperand",
-        "value": "value",
-        "valueType": "string",
+        "value": false,
+        "valueType": "boolean",
       },
     ],
     "path": "path",
@@ -127,23 +127,6 @@ Array [
     "expressions": Array [
       Object {
         "expressionType": "neq",
-        "type": "expressionOperand",
-        "value": "value",
-        "valueType": "string",
-      },
-    ],
-    "path": "path",
-    "type": "operand",
-  },
-]
-`;
-
-exports[`parser should parse nex statements 1`] = `
-Array [
-  Object {
-    "expressions": Array [
-      Object {
-        "expressionType": "nex",
         "type": "expressionOperand",
         "value": "value",
         "valueType": "string",
@@ -268,6 +251,8 @@ exports[`parser should throw a parse error for parsing expressions without a fil
 exports[`parser should throw a parse error on missing filter start 1`] = `"unexpected {\\"str\\":\\"bla\\",\\"type\\":\\"error\\"}"`;
 
 exports[`parser should throw a parse error on unimplemented items 1`] = `"unexpected {\\"str\\":\\"test\\",\\"type\\":\\"error\\"}"`;
+
+exports[`parser should throw an error on invalid boolean values 1`] = `"invalid boolean: 1"`;
 
 exports[`parser should throw an error when encountering eof at the end of an expression 1`] = `"unexpected {\\"str\\":\\"\\",\\"type\\":\\"eof\\"}"`;
 
