@@ -247,7 +247,9 @@ function parseAfterExpression(p: Parser): StateFn {
 
     if (next.type === "filtersEnd") {
         const currentFilterOperand = p.currentFilterOperand() ?? parseError()
-        currentFilterOperand.expressions.push(...p.expressionOperatorStack.reverse())
+        currentFilterOperand.expressions.push(
+            ...p.expressionOperatorStack.reverse()
+        )
         p.expressionOperatorStack = []
 
         return parseAfterFilter
