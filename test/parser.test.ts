@@ -42,4 +42,141 @@ describe("parser", () => {
 
         expect(result).toMatchSnapshot()
     })
+
+    it("should throw a parse error", () => {
+        expect(() => parse([])).toThrowErrorMatchingSnapshot()
+    })
+
+    it("should throw a parse error on unimplemented items", () => {
+        expect(() =>
+            parse([{ str: "test", type: "error" }])
+        ).toThrowErrorMatchingSnapshot()
+    })
+
+    it("should throw a parse error for parsing expressions without a filter", () => {
+        expect(() =>
+            parse([
+                { str: "", type: "path" },
+                { str: "test", type: "filtersStart" },
+                { str: "test", type: "filtersEnd" }
+            ])
+        ).toThrowErrorMatchingSnapshot()
+    })
+
+    it("should parse bundles correctly", () => {
+        const bundleExample: Array<Item> = [
+            { str: "(", type: "bundleStart" },
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "eq", type: "filterEq" },
+            { str: "asd", type: "string" },
+            { str: "]", type: "filtersEnd" },
+            { str: ",", type: "and" },
+            { str: "path2", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "eq", type: "filterEq" },
+            { str: "bdf", type: "string" },
+            { str: "]", type: "filtersEnd" },
+            { str: ")", type: "bundleEnd" },
+            { str: "", type: "eof" }
+        ]
+
+        const result = parse(bundleExample)
+        expect(result).toMatchSnapshot()
+    })
+
+    it("should throw a parse error on missing filter start", () => {
+        expect(() =>
+            parse([
+                { str: "test", type: "path" },
+                { str: "bla", type: "error" }
+            ])
+        ).toThrowErrorMatchingSnapshot()
+    })
+
+    it("should parse gte statements", () => {
+        const result = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "gte", type: "filterGte" },
+            { str: "value", type: "string" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" }
+        ])
+
+        expect(result).toMatchSnapshot()
+    })
+
+    it("should parse lte statements", () => {
+        const result = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "lte", type: "filterLte" },
+            { str: "value", type: "string" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" }
+        ])
+
+        expect(result).toMatchSnapshot()
+    })
+
+    it("should throw an error when parsing invalid values", () => {
+        expect(() =>
+            parse([
+                { str: "path", type: "path" },
+                { str: "[", type: "filtersStart" },
+                { str: "lte", type: "filterLte" },
+                { str: "value", type: "error" },
+                { str: "]", type: "filtersEnd" },
+                { str: "", type: "eof" }
+            ])
+        ).toThrowErrorMatchingSnapshot()
+    })
+
+    it("should parse bundles in expressions correctly", () => {
+        const result = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "eq", type: "filterEq" },
+            { str: "asd", type: "string" },
+            { str: "|", type: "or" },
+            { str: "gt", type: "filterGt" },
+            { str: "asdf", type: "string" },
+            { str: ",", type: "and" },
+            { str: "lt", type: "filterLt" },
+            { str: "asdf", type: "string" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" }
+        ])
+
+        expect(result).toMatchSnapshot()
+    })
+
+    it("should throw an error when encountering eof at the end of an expression", () => {
+        expect(() =>
+            parse([
+                { str: "path", type: "path" },
+                { str: "[", type: "filtersStart" },
+                { str: "eq", type: "filterEq" },
+                { str: "asd", type: "string" },
+                { str: "|", type: "or" },
+                { str: "gt", type: "filterGt" },
+                { str: "asdf", type: "string" },
+                { str: "", type: "eof" }
+            ])
+        ).toThrowErrorMatchingSnapshot()
+    })
+
+    it("should throw an error when encountering error after a filter", () => {
+        expect(() =>
+            parse([
+                { str: "path", type: "path" },
+                { str: "[", type: "filtersStart" },
+                { str: "eq", type: "filterEq" },
+                { str: "asd", type: "string" },
+                { str: "]", type: "filtersEnd" },
+                { str: "", type: "error" }
+            ])
+        ).toThrowErrorMatchingSnapshot()
+    })
 })

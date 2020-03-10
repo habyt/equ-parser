@@ -16,15 +16,11 @@ function filterPrecedence(a: FilterOperator, b: FilterOperator): boolean {
 }
 
 function parseError(msg?: any): never {
-    if (msg === undefined) {
-        throw new EQUParsingError()
-    }
-
     if (typeof msg === "string") {
         throw new EQUParsingError(msg)
     }
 
-    throw new EQUParsingError("unimplemented " + JSON.stringify(msg))
+    throw new EQUParsingError("unexpected " + JSON.stringify(msg))
 }
 
 type StateFn = ((ctx: ParserContext) => StateFn) | undefined
@@ -83,9 +79,7 @@ class ParserContext {
     }
 
     pushExpressionItem(item: ExpressionItem) {
-        const current =
-            this.currentFilterOperand() ??
-            parseError("expected to have a filter operand")
+        const current = this.currentFilterOperand()
 
         current.expressions.push(item)
     }
@@ -116,7 +110,7 @@ class ParserContext {
         return this.filterOperatorStack[this.filterOperatorStack.length - 1]
     }
 
-    currentFilterOperand(): FilterOperand | undefined {
+    currentFilterOperand(): FilterOperand {
         for (let i = this.parsedItems.length - 1; i >= 0; i--) {
             const item = this.parsedItems[i]
             if (item.type === "operand") {
@@ -124,7 +118,10 @@ class ParserContext {
             }
         }
 
-        return undefined
+        // this code is effectively unreachable. this only gets called when the
+        // state is setup such that there is a FilterOperand in the output
+        /* istanbul ignore next */
+        parseError("expected to have a filter operand, but didn't find one")
     }
 }
 
@@ -246,7 +243,7 @@ function parseAfterExpression(ctx: ParserContext): StateFn {
     const next = ctx.next()
 
     if (next.type === "filtersEnd") {
-        const currentFilterOperand = ctx.currentFilterOperand() ?? parseError()
+        const currentFilterOperand = ctx.currentFilterOperand()
         currentFilterOperand.expressions.push(
             ...ctx.expressionOperatorStack.reverse()
         )

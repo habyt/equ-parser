@@ -23,6 +23,12 @@ describe("lexer", () => {
         expect(result).toMatchSnapshot()
     })
 
+    it("should lex expression bundles correctly", () => {
+        const result = lex(`path[eq:"asd"|gt:"asdf",lt:"asdf"]`)
+
+        expect(result).toMatchSnapshot()
+    })
+
     it("should throw an error if the path is missing", () => {
         expect(() => lex("[")).toThrowErrorMatchingSnapshot()
     })

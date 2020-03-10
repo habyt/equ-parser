@@ -90,6 +90,59 @@ Array [
 ]
 `;
 
+exports[`lexer should lex expression bundles correctly 1`] = `
+Array [
+  Object {
+    "str": "path",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": "asd",
+    "type": "string",
+  },
+  Object {
+    "str": "|",
+    "type": "or",
+  },
+  Object {
+    "str": "gt",
+    "type": "filterGt",
+  },
+  Object {
+    "str": "asdf",
+    "type": "string",
+  },
+  Object {
+    "str": ",",
+    "type": "and",
+  },
+  Object {
+    "str": "lt",
+    "type": "filterLt",
+  },
+  Object {
+    "str": "asdf",
+    "type": "string",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": "",
+    "type": "eof",
+  },
+]
+`;
+
 exports[`lexer should lex the example correctly 1`] = `
 Array [
   Object {
