@@ -1,3 +1,20 @@
+# v0.2.0 (Tue Mar 10 2020)
+
+#### 🚀 Enhancement
+
+- Add boolean types and new operators [#2](https://github.com/homefully/equ-parser/pull/2) ([@mhlz](https://github.com/mhlz))
+
+#### ⚠️  Pushed to `master`
+
+- Try to get the entire git history ([@mhlz](https://github.com/mhlz))
+- Try to fix workflow ([@mhlz](https://github.com/mhlz))
+
+#### Authors: 1
+
+- Mischa Holz ([@mhlz](https://github.com/mhlz))
+
+---
+
 # v0.0.3 (Tue Mar 10 2020)
 
 #### 🐛 Bug Fix
