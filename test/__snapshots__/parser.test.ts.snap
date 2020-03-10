@@ -1,0 +1,208 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parser should parse bundles correctly 1`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": "asd",
+        "valueType": "string",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": "bdf",
+        "valueType": "string",
+      },
+    ],
+    "path": "path2",
+    "type": "operand",
+  },
+  Object {
+    "operator": "and",
+    "type": "operator",
+  },
+]
+`;
+
+exports[`parser should parse bundles in expressions correctly 1`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": "asd",
+        "valueType": "string",
+      },
+      Object {
+        "expressionType": "gt",
+        "type": "expressionOperand",
+        "value": "asdf",
+        "valueType": "string",
+      },
+      Object {
+        "operator": "or",
+        "type": "expressionOperator",
+      },
+      Object {
+        "expressionType": "lt",
+        "type": "expressionOperand",
+        "value": "asdf",
+        "valueType": "string",
+      },
+      Object {
+        "operator": "and",
+        "type": "expressionOperator",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+]
+`;
+
+exports[`parser should parse gte statements 1`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "gte",
+        "type": "expressionOperand",
+        "value": "value",
+        "valueType": "string",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+]
+`;
+
+exports[`parser should parse lte statements 1`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "lte",
+        "type": "expressionOperand",
+        "value": "value",
+        "valueType": "string",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+]
+`;
+
+exports[`parser should parse the example 1`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": "foo",
+        "valueType": "string",
+      },
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": "bar",
+        "valueType": "string",
+      },
+      Object {
+        "operator": "or",
+        "type": "expressionOperator",
+      },
+    ],
+    "path": "name.first",
+    "type": "operand",
+  },
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "ct",
+        "type": "expressionOperand",
+        "value": "foo",
+        "valueType": "string",
+      },
+      Object {
+        "expressionType": "ct",
+        "type": "expressionOperand",
+        "value": "bar",
+        "valueType": "string",
+      },
+      Object {
+        "operator": "and",
+        "type": "expressionOperator",
+      },
+    ],
+    "path": "email",
+    "type": "operand",
+  },
+  Object {
+    "operator": "or",
+    "type": "operator",
+  },
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "gt",
+        "type": "expressionOperand",
+        "value": 4.5,
+        "valueType": "number",
+      },
+      Object {
+        "expressionType": "lt",
+        "type": "expressionOperand",
+        "value": -10,
+        "valueType": "number",
+      },
+      Object {
+        "operator": "and",
+        "type": "expressionOperator",
+      },
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": 15,
+        "valueType": "number",
+      },
+      Object {
+        "operator": "or",
+        "type": "expressionOperator",
+      },
+    ],
+    "path": "age",
+    "type": "operand",
+  },
+  Object {
+    "operator": "and",
+    "type": "operator",
+  },
+]
+`;
+
+exports[`parser should throw a parse error 1`] = `"expected to have more items"`;
+
+exports[`parser should throw a parse error for parsing expressions without a filter 1`] = `"unexpected {\\"str\\":\\"test\\",\\"type\\":\\"filtersEnd\\"}"`;
+
+exports[`parser should throw a parse error on missing filter start 1`] = `"unexpected {\\"str\\":\\"bla\\",\\"type\\":\\"error\\"}"`;
+
+exports[`parser should throw a parse error on unimplemented items 1`] = `"unexpected {\\"str\\":\\"test\\",\\"type\\":\\"error\\"}"`;
+
+exports[`parser should throw an error when encountering eof at the end of an expression 1`] = `"unexpected {\\"str\\":\\"\\",\\"type\\":\\"eof\\"}"`;
+
+exports[`parser should throw an error when encountering error after a filter 1`] = `"unexpected {\\"str\\":\\"\\",\\"type\\":\\"error\\"}"`;
+
+exports[`parser should throw an error when parsing invalid values 1`] = `"unexpected {\\"str\\":\\"value\\",\\"type\\":\\"error\\"}"`;

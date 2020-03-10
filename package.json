@@ -1,5 +1,5 @@
 {
-  "name": "@homefully/equ-parser",
+  "name": "@equ-lang/parser",
   "version": "0.0.2",
   "description": "",
   "main": "build/index.js",
@@ -20,7 +20,7 @@
     "type": "git",
     "url": "github:homefully/equ-parser"
   },
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^25.1.4",
     "auto": "^9.19.2",
@@ -41,6 +41,8 @@
     "semi": false
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  }
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "dependencies": {}
 }
