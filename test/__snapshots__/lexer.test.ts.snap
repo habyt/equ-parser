@@ -1,5 +1,95 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`lexer should correctly parse esacpe sequences 1`] = `
+Array [
+  Object {
+    "str": "path",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": "string with \\\\ in it and also \\"",
+    "type": "string",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": "",
+    "type": "eof",
+  },
+]
+`;
+
+exports[`lexer should lex bundles correctly 1`] = `
+Array [
+  Object {
+    "str": "(",
+    "type": "bundleStart",
+  },
+  Object {
+    "str": "path",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": "asd",
+    "type": "string",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": ",",
+    "type": "and",
+  },
+  Object {
+    "str": "path2",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": "bdf",
+    "type": "string",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": ")",
+    "type": "bundleEnd",
+  },
+  Object {
+    "str": "",
+    "type": "eof",
+  },
+]
+`;
+
 exports[`lexer should lex the example correctly 1`] = `
 Array [
   Object {
@@ -132,3 +222,21 @@ Array [
   },
 ]
 `;
+
+exports[`lexer should throw a parsing error on unended string values 1`] = `"expected string to end, but got asd"`;
+
+exports[`lexer should throw an EQUParsingError on error 1`] = `"expected filter type, got "`;
+
+exports[`lexer should throw an error if the path is missing 1`] = `"expected path, but got ["`;
+
+exports[`lexer should throw an error on an invalid escape sequence 1`] = `"invalid escape sequence: \\\\s"`;
+
+exports[`lexer should throw an error on an invalid filter value 1`] = `"expected filter value but got []"`;
+
+exports[`lexer should throw an error on an invalid number 1`] = `"invalid number: .12."`;
+
+exports[`lexer should throw an error on invalid combinator 1`] = `"invalid combinator: :"`;
+
+exports[`lexer should throw an error on missing filterIs 1`] = `"expected : but got ]"`;
+
+exports[`lexer should throw an error on missing start filters 1`] = `"expected '[', but got "`;

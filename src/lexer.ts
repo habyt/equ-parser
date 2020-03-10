@@ -1,3 +1,4 @@
+import assert from 'assert'
 export type Token =
     | "eof"
     | "error"
@@ -104,7 +105,16 @@ class Lexer {
     }
 
     acceptRun(valid: string) {
-        while (valid.indexOf(this.next()) >= 0) {}
+        while (true) {
+            const next = this.next()
+            if (next === "") {
+                break
+            }
+
+            if (valid.indexOf(next) === -1) {
+                break
+            }
+        }
 
         this.backup()
     }
@@ -214,16 +224,16 @@ function lexStringValue(l: Lexer): StateFn {
             return lexAfterFilterValue
         }
 
-        if (next === "\\") {
+        // if we're here next must be a \ because of acceptRunUntil
+        assert(next === "\\")
+        l.next()
+
+        const escapedSymbol = l.peek()
+
+        if (escapedSymbol === "\\" || escapedSymbol === '"') {
             l.next()
-
-            const escapedSymbol = l.peek()
-
-            if (escapedSymbol === "\\" || escapedSymbol === '"') {
-                l.next()
-            } else {
-                lexError("invalid escape sequence: \\" + escapedSymbol)
-            }
+        } else {
+            lexError("invalid escape sequence: \\" + escapedSymbol)
         }
     }
 }
@@ -302,6 +312,10 @@ function lexToken(tokenValue: string, token: Token, next: StateFn): StateFn {
         lexer.emit(token)
         return next
     }
+}
+
+export type LexerOptions = {
+    debug?: boolean
 }
 
 export function lex(str: string): Array<Item> {
