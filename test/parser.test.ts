@@ -107,6 +107,58 @@ describe("parser", () => {
         expect(result).toMatchSnapshot()
     })
 
+    it("should parse nex statements", () => {
+        const result = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "nex", type: "filterNex" },
+            { str: "value", type: "string" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" }
+        ])
+
+        expect(result).toMatchSnapshot()
+    })
+
+    it("should parse neq statements", () => {
+        const result = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "neq", type: "filterNeq" },
+            { str: "value", type: "string" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" }
+        ])
+
+        expect(result).toMatchSnapshot()
+    })
+
+    it("should parse ex statements", () => {
+        const result = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "ex", type: "filterEx" },
+            { str: "value", type: "string" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" }
+        ])
+
+        expect(result).toMatchSnapshot()
+    })
+
+    it("should parse rgx statements", () => {
+        const result = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "rgx", type: "filterRgx" },
+            { str: "value", type: "string" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" }
+        ])
+
+        expect(result).toMatchSnapshot()
+    })
+
     it("should parse lte statements", () => {
         const result = parse([
             { str: "path", type: "path" },

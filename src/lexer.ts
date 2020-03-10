@@ -17,14 +17,22 @@ export type Token =
     | "filterLte"
     | "filterEq"
     | "filterCt"
+    | "filterRgx"
+    | "filterEx"
+    | "filterNeq"
+    | "filterNex"
 
-const filters: { [k: string]: Token } = {
+export const filters: { [k: string]: Token } = {
     eq: "filterEq",
     lt: "filterLt",
     gt: "filterGt",
     lte: "filterLte",
     gte: "filterGte",
-    ct: "filterCt"
+    ct: "filterCt",
+    rgx: "filterRgx",
+    ex: "filterEx",
+    neq: "filterNeq",
+    nex: "filterNex"
 }
 
 const tokenBundleStart = "("
@@ -312,10 +320,6 @@ function lexToken(tokenValue: string, token: Token, next: StateFn): StateFn {
         ctx.emit(token)
         return next
     }
-}
-
-export type LexerOptions = {
-    debug?: boolean
 }
 
 export function lex(str: string): Array<Item> {

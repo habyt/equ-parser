@@ -70,6 +70,23 @@ Array [
 ]
 `;
 
+exports[`parser should parse ex statements 1`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "ex",
+        "type": "expressionOperand",
+        "value": "value",
+        "valueType": "string",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+]
+`;
+
 exports[`parser should parse gte statements 1`] = `
 Array [
   Object {
@@ -93,6 +110,57 @@ Array [
     "expressions": Array [
       Object {
         "expressionType": "lte",
+        "type": "expressionOperand",
+        "value": "value",
+        "valueType": "string",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+]
+`;
+
+exports[`parser should parse neq statements 1`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "neq",
+        "type": "expressionOperand",
+        "value": "value",
+        "valueType": "string",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+]
+`;
+
+exports[`parser should parse nex statements 1`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "nex",
+        "type": "expressionOperand",
+        "value": "value",
+        "valueType": "string",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+]
+`;
+
+exports[`parser should parse rgx statements 1`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "rgx",
         "type": "expressionOperand",
         "value": "value",
         "valueType": "string",

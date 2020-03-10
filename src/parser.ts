@@ -1,4 +1,4 @@
-import { Item, EQUParsingError } from "./lexer"
+import { Item, EQUParsingError, filters } from "./lexer"
 
 function expressionPrecedence(
     a: ExpressionOperator,
@@ -27,7 +27,7 @@ type StateFn = ((ctx: ParserContext) => StateFn) | undefined
 
 type FilterOperatorType = "and" | "or" | "bundleStart" | "bundleEnd"
 
-type ExpressionType = "eq" | "gt" | "gte" | "lt" | "lte" | "ct"
+type ExpressionType = keyof typeof filters
 type ExpressionOperatorType = "and" | "or" | "bundleStart" | "bundleEnd"
 
 type ValueType = "number" | "string"
@@ -194,6 +194,22 @@ function parseExpression(ctx: ParserContext): StateFn {
         }
         case "filterLte": {
             expressionOperator = "lte"
+            break
+        }
+        case "filterRgx": {
+            expressionOperator = "rgx"
+            break
+        }
+        case "filterEx": {
+            expressionOperator = "ex"
+            break
+        }
+        case "filterNeq": {
+            expressionOperator = "neq"
+            break
+        }
+        case "filterNex": {
+            expressionOperator = "nex"
             break
         }
         default:
