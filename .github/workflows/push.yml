@@ -41,15 +41,11 @@ jobs:
         runs-on: ubuntu-latest
         if: "contains(github.ref, 'master') && !contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
         steps:
-            -   uses: actions/checkout@v1
+            -   uses: actions/checkout@v2
+            -   run: git fetch --prune --unshallow
             -   uses: actions/setup-node@v1
                 with:
                     node-version: 12
-            -   name: Prepare repository
-                run: |
-                    git checkout ${GITHUB_REF##*/} --
-                    git fetch origin --tags
-                    git branch --set-upstream-to origin/${GITHUB_REF##*/} ${GITHUB_REF##*/}
             -   uses: actions/cache@v1
                 id: cache-modules
                 with:
