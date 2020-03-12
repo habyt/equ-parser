@@ -1,3 +1,15 @@
+# v0.3.0 (Thu Mar 12 2020)
+
+#### 🚀 Enhancement
+
+- Add a better way to report errors to users [#4](https://github.com/homefully/equ-parser/pull/4) ([@mhlz](https://github.com/mhlz))
+
+#### Authors: 1
+
+- Mischa Holz ([@mhlz](https://github.com/mhlz))
+
+---
+
 # v0.2.0 (Tue Mar 10 2020)
 
 #### 🚀 Enhancement
