@@ -122,4 +122,8 @@ Array [
 ]
 `;
 
+exports[`equ should throw an error on missing " 1`] = `"expected filter value but got TEST2]"`;
+
+exports[`equ should throw an error on missing " 2`] = `"expected string to end, but got TEST2]"`;
+
 exports[`equ should throw an error on parsing ex operator without a boolean 1`] = `"encountered ex operator with the value 1, but it must be boolean"`;

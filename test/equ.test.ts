@@ -18,4 +18,9 @@ describe("equ", () => {
     it("should throw an error on parsing ex operator without a boolean", () => {
         expect(() => parse("path[ex:1]")).toThrowErrorMatchingSnapshot()
     })
+
+    it('should throw an error on missing "', () => {
+        expect(() => parse("path[eq:TEST2]")).toThrowErrorMatchingSnapshot()
+        expect(() => parse('path[eq:"TEST2]')).toThrowErrorMatchingSnapshot()
+    })
 })

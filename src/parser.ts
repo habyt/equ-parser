@@ -1,4 +1,5 @@
-import { Item, EQUParsingError, filters } from "./lexer"
+import { Item, filters } from "./lexer"
+import { EQUParsingError } from "./error"
 
 function expressionPrecedence(
     a: ExpressionOperator,

@@ -1,6 +1,8 @@
 export * from "./equ"
 
-export { Token, EQUParsingError, Item } from "./lexer"
+export * from "./error"
+
+export { Token, Item } from "./lexer"
 export {
     FilterOperator,
     FilterOperand,
