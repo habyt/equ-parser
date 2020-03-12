@@ -1,4 +1,3 @@
-
 export class EQUError extends Error {
     constructor(msg?: string) {
         super(msg)
@@ -16,4 +15,3 @@ export class EQUParsingError extends EQUError {
         super(msg)
     }
 }
-

@@ -19,8 +19,8 @@ describe("equ", () => {
         expect(() => parse("path[ex:1]")).toThrowErrorMatchingSnapshot()
     })
 
-    it("should throw an error on missing \"", () => {
+    it('should throw an error on missing "', () => {
         expect(() => parse("path[eq:TEST2]")).toThrowErrorMatchingSnapshot()
-        expect(() => parse("path[eq:\"TEST2]")).toThrowErrorMatchingSnapshot()
+        expect(() => parse('path[eq:"TEST2]')).toThrowErrorMatchingSnapshot()
     })
 })
