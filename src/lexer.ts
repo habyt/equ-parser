@@ -1,4 +1,6 @@
 import assert from "assert"
+import { EQULexingError } from "./error"
+
 export type Token =
     | "eof"
     | "error"
@@ -55,14 +57,8 @@ const tokenFalse = "false"
 
 type StateFn = ((ctx: LexerContext) => StateFn) | undefined
 
-export class EQUParsingError extends Error {
-    constructor(msg?: string) {
-        super(msg)
-    }
-}
-
 function lexError(msg?: string): never {
-    throw new EQUParsingError(msg)
+    throw new EQULexingError(msg)
 }
 
 class LexerContext {
@@ -178,13 +174,13 @@ function lexFilters(ctx: LexerContext): StateFn {
 
     ctx.acceptRun(tokenValidPath)
     if (ctx.pos <= ctx.start) {
-        throw new EQUParsingError("expected path, but got " + ctx.rest())
+        lexError("expected path, but got " + ctx.rest())
     }
 
     ctx.emit("path")
 
     if (ctx.peek() !== tokenFiltersStart) {
-        throw new EQUParsingError("expected '[', but got " + ctx.rest())
+        lexError("expected '[', but got " + ctx.rest())
     }
 
     return lexToken(tokenFiltersStart, "filtersStart", lexInsideFilters)
