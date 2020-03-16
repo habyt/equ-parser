@@ -1,3 +1,15 @@
+# v0.3.1 (Mon Mar 16 2020)
+
+#### 🐛 Bug Fix
+
+- Bump auto from 9.19.3 to 9.19.5 [#5](https://github.com/homefully/equ-parser/pull/5) ([@dependabot-preview[bot]](https://github.com/dependabot-preview[bot]))
+
+#### Authors: 1
+
+- [@dependabot-preview[bot]](https://github.com/dependabot-preview[bot])
+
+---
+
 # v0.3.0 (Thu Mar 12 2020)
 
 #### 🚀 Enhancement
