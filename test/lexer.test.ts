@@ -106,12 +106,26 @@ describe("lexer", () => {
     })
 
     it("should not lex incomplete date time values", () => {
-        expect(() => lex("path[eq:2020-10-10T12]")).toThrowErrorMatchingSnapshot()
-        expect(() => lex("path[eq:2020-10-10T12:12]")).toThrowErrorMatchingSnapshot()
-        expect(() => lex("path[eq:2020-10-10T12:12:12]")).toThrowErrorMatchingSnapshot()
-        expect(() => lex("path[eq:2020-10-10T12:12:12.123]")).toThrowErrorMatchingSnapshot()
-        expect(() => lex("path[eq:2020-10-10T12:12:12.123+]")).toThrowErrorMatchingSnapshot()
-        expect(() => lex("path[eq:2020-10-10T12:12:12.123+12]")).toThrowErrorMatchingSnapshot()
-        expect(() => lex("path[eq:2020-10-10T12:12:12.123+12:]")).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12]")
+        ).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12:12]")
+        ).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12:12:12]")
+        ).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12:12:12.123]")
+        ).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12:12:12.123+]")
+        ).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12:12:12.123+12]")
+        ).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12:12:12.123+12:]")
+        ).toThrowErrorMatchingSnapshot()
     })
 })

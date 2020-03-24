@@ -9,5 +9,5 @@ export {
     ParseItem,
     ExpressionOperand,
     ExpressionOperator,
-    ExpressionItem
+    ExpressionItem,
 } from "./parser"

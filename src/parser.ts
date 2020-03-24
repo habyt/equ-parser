@@ -137,7 +137,7 @@ function parsePath(ctx: ParserContext): StateFn {
         ctx.pushFilterItem({
             type: "operand",
             path: next.str,
-            expressions: []
+            expressions: [],
         })
 
         return parseFiltersStart
@@ -149,7 +149,7 @@ function parsePath(ctx: ParserContext): StateFn {
 function parseFilterBundleStart(ctx: ParserContext): StateFn {
     ctx.filterOperatorStack.push({
         type: "operator",
-        operator: "bundleStart"
+        operator: "bundleStart",
     })
 
     return parsePath
@@ -278,7 +278,7 @@ function parseExpression(ctx: ParserContext): StateFn {
         type: "expressionOperand",
         expressionType: expressionOperator,
         valueType,
-        value: parsedValue
+        value: parsedValue,
     })
 
     return parseAfterExpression
@@ -287,7 +287,7 @@ function parseExpression(ctx: ParserContext): StateFn {
 function parseExpressionBundleStart(ctx: ParserContext): StateFn {
     ctx.expressionOperatorStack.push({
         type: "expressionOperator",
-        operator: "bundleStart"
+        operator: "bundleStart",
     })
 
     return parseExpression
@@ -309,7 +309,7 @@ function parseAfterExpression(ctx: ParserContext): StateFn {
     if (next.type === "or" || next.type === "and") {
         const expressionOperator: ExpressionOperator = {
             type: "expressionOperator",
-            operator: next.type
+            operator: next.type,
         }
 
         let currentTopExpression = ctx.topExpressionOperator()
@@ -356,7 +356,7 @@ function parseAfterFilter(ctx: ParserContext): StateFn {
     if (next.type === "and" || next.type === "or") {
         const filterOperator: FilterOperator = {
             type: "operator",
-            operator: next.type
+            operator: next.type,
         }
 
         let currentTopFilter = ctx.topFilterOperator()

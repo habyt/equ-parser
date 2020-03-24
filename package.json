@@ -11,8 +11,8 @@
     "test": "tsc --noEmit && jest",
     "test:ci": "jest --reporters=default --reporters=jest-github-actions-reporter",
     "test:watch": "jest --watch",
-    "lint": "prettier -c src/**/*.{ts,json,js} test/**/*.{ts,json,js}",
-    "lint:fix": "prettier --write src/**/*.{ts,json,js} test/**/*.{ts,json,js}",
+    "lint": "prettier -c src/**.ts test/**.{ts,json}",
+    "lint:fix": "prettier --write src/**.ts test/**.{ts,json}",
     "build": "tsc"
   },
   "author": "homefully",
@@ -26,7 +26,7 @@
     "auto": "^9.19.2",
     "jest": "^25.1.0",
     "jest-github-actions-reporter": "^1.0.2",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.0",
     "ts-jest": "^25.2.1",
     "typescript": "^3.8.3"
   },

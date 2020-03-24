@@ -35,7 +35,7 @@ export const filters: { [k: string]: Token } = {
     ct: "filterCt",
     rgx: "filterRgx",
     ex: "filterEx",
-    neq: "filterNeq"
+    neq: "filterNeq",
 }
 
 const tokenBundleStart = "("
@@ -285,28 +285,46 @@ function lexRestOfDateTime(ctx: LexerContext): StateFn {
 function lexRestOfTime(ctx: LexerContext): StateFn {
     // hour
     ctx.acceptRun(tokenValidDigits)
-    ctx.assertLength(13, "invalid date time value: " + ctx.current() + "; hour is not 2 digits long")
+    ctx.assertLength(
+        13,
+        "invalid date time value: " +
+            ctx.current() +
+            "; hour is not 2 digits long"
+    )
     if (!ctx.accept(":")) {
         lexError("invalid date time value: " + ctx.current())
     }
 
     // minute
     ctx.acceptRun(tokenValidDigits)
-    ctx.assertLength(16, "invalid date time value: " + ctx.current() + "; minute is not 2 digits long")
+    ctx.assertLength(
+        16,
+        "invalid date time value: " +
+            ctx.current() +
+            "; minute is not 2 digits long"
+    )
     if (!ctx.accept(":")) {
         lexError("invalid date time value: " + ctx.current())
     }
 
     // second
     ctx.acceptRun(tokenValidDigits)
-    ctx.assertLength(19, "invalid date value: " + ctx.current() + "; second is not 2 digits long")
+    ctx.assertLength(
+        19,
+        "invalid date value: " + ctx.current() + "; second is not 2 digits long"
+    )
     if (!ctx.accept(".")) {
         lexError("invalid date time value: " + ctx.current())
     }
 
     // second fraction
     ctx.acceptRun(tokenValidDigits)
-    ctx.assertLength(23, "invalid date value: " + ctx.current() + "; second fraction is not 3 digits long")
+    ctx.assertLength(
+        23,
+        "invalid date value: " +
+            ctx.current() +
+            "; second fraction is not 3 digits long"
+    )
     if (ctx.accept("Z")) {
         ctx.emit("dateTime")
         return lexAfterFilterValue
@@ -318,14 +336,24 @@ function lexRestOfTime(ctx: LexerContext): StateFn {
 
     // offset hour
     ctx.acceptRun(tokenValidDigits)
-    ctx.assertLength(26, "invalid date value: " + ctx.current() + "; offset hour is not 2 digits long")
+    ctx.assertLength(
+        26,
+        "invalid date value: " +
+            ctx.current() +
+            "; offset hour is not 2 digits long"
+    )
     if (!ctx.accept(":")) {
         lexError("invalid date time value: " + ctx.current())
     }
 
     // offset minute
     ctx.acceptRun(tokenValidDigits)
-    ctx.assertLength(29, "invalid date value: " + ctx.current() + "; offset minute is not 2 digits long")
+    ctx.assertLength(
+        29,
+        "invalid date value: " +
+            ctx.current() +
+            "; offset minute is not 2 digits long"
+    )
     ctx.emit("dateTime")
 
     return lexAfterFilterValue
