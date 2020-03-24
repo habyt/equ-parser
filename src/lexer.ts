@@ -14,6 +14,8 @@ export type Token =
     | "string"
     | "number"
     | "boolean"
+    | "date"
+    | "dateTime"
     | "filterGt"
     | "filterLt"
     | "filterGte"
@@ -52,6 +54,9 @@ const tokenValidPath =
 const tokenValidOperator = "abcdefghijklmnopqrstuvwxyz"
 const tokenValidNumberStart = "+-.0123456789"
 
+const tokenValidDateTime = "-0123456789T:+Z"
+const tokenValidDigits = "0123456789"
+
 const tokenTrue = "true"
 const tokenFalse = "false"
 
@@ -80,12 +85,14 @@ class LexerContext {
             value = value.replace('\\"', '"')
         }
 
-        this.items.push({ str: value, type: token })
+        const item = { str: value, type: token }
+
+        this.items.push(item)
         this.start = this.pos
     }
 
-    next(): string {
-        const next = this.input.substr(this.pos, 1)
+    next(length?: number): string {
+        const next = this.input.substr(this.pos, length ?? 1)
         this.width = next.length
         this.pos += this.width
         return next
@@ -104,8 +111,8 @@ class LexerContext {
         this.pos -= this.width
     }
 
-    peek(): string {
-        const next = this.next()
+    peek(length?: number): string {
+        const next = this.next(length)
         this.backup()
         return next
     }
@@ -159,6 +166,12 @@ class LexerContext {
 
     current(): string {
         return this.input.substring(this.start, this.pos)
+    }
+
+    assertLength(length: number, error: string) {
+        if (this.pos - this.start !== length) {
+            lexError(error)
+        }
     }
 }
 
@@ -216,7 +229,7 @@ function lexFilterValue(ctx: LexerContext): StateFn {
     }
 
     if (tokenValidNumberStart.indexOf(next) >= 0) {
-        return lexNumberValue
+        return lexNumberOrDateTime
     }
 
     if (next === '"') {
@@ -226,6 +239,114 @@ function lexFilterValue(ctx: LexerContext): StateFn {
     }
 
     lexError("expected filter value but got " + ctx.rest())
+}
+
+function lexNumberOrDateTime(ctx: LexerContext): StateFn {
+    const peek = ctx.peek()
+
+    if (peek === "+" || peek === "-" || peek === ".") {
+        return lexNumberValue
+    }
+
+    ctx.acceptRun(tokenValidDigits)
+    if (ctx.accept("-")) {
+        ctx.assertLength(5, "invalid date value: " + ctx.current())
+        return lexRestOfDateTime
+    }
+
+    ctx.accept(".")
+    ctx.acceptRun(tokenValidDigits)
+    ctx.emit("number")
+
+    return lexAfterFilterValue
+}
+
+function lexRestOfDateTime(ctx: LexerContext): StateFn {
+    // month
+    ctx.acceptRun(tokenValidDigits)
+    ctx.assertLength(7, "invalid date value: " + ctx.current())
+
+    if (!ctx.accept("-")) {
+        lexError("invalid date value: " + ctx.current())
+    }
+
+    // day
+    ctx.acceptRun(tokenValidDigits)
+    ctx.assertLength(10, "invalid date value: " + ctx.current())
+
+    if (ctx.accept("T")) {
+        return lexRestOfTime
+    }
+
+    ctx.emit("date")
+    return lexAfterFilterValue
+}
+
+function lexRestOfTime(ctx: LexerContext): StateFn {
+    // hour
+    ctx.acceptRun(tokenValidDigits)
+    ctx.assertLength(13, "invalid date time value: " + ctx.current() + "; hour is not 2 digits long")
+    if (!ctx.accept(":")) {
+        lexError("invalid date time value: " + ctx.current())
+    }
+
+    // minute
+    ctx.acceptRun(tokenValidDigits)
+    ctx.assertLength(16, "invalid date time value: " + ctx.current() + "; minute is not 2 digits long")
+    if (!ctx.accept(":")) {
+        lexError("invalid date time value: " + ctx.current())
+    }
+
+    // second
+    ctx.acceptRun(tokenValidDigits)
+    ctx.assertLength(19, "invalid date value: " + ctx.current() + "; second is not 2 digits long")
+    if (!ctx.accept(".")) {
+        lexError("invalid date time value: " + ctx.current())
+    }
+
+    // second fraction
+    ctx.acceptRun(tokenValidDigits)
+    ctx.assertLength(23, "invalid date value: " + ctx.current() + "; second fraction is not 3 digits long")
+    if (ctx.accept("Z")) {
+        ctx.emit("dateTime")
+        return lexAfterFilterValue
+    }
+
+    if (!ctx.accept("-+")) {
+        lexError("invalid date time value: " + ctx.current())
+    }
+
+    // offset hour
+    ctx.acceptRun(tokenValidDigits)
+    ctx.assertLength(26, "invalid date value: " + ctx.current() + "; offset hour is not 2 digits long")
+    if (!ctx.accept(":")) {
+        lexError("invalid date time value: " + ctx.current())
+    }
+
+    // offset minute
+    ctx.acceptRun(tokenValidDigits)
+    ctx.assertLength(29, "invalid date value: " + ctx.current() + "; offset minute is not 2 digits long")
+    ctx.emit("dateTime")
+
+    return lexAfterFilterValue
+}
+
+function lexNumberValue(ctx: LexerContext): StateFn {
+    ctx.accept("+-")
+
+    let decimalOccured = ctx.accept(".")
+
+    ctx.acceptRun(tokenValidDigits)
+    if (ctx.accept(".")) {
+        if (decimalOccured) {
+            lexError("invalid number: " + ctx.current())
+        }
+
+        ctx.acceptRun(tokenValidDigits)
+    }
+
+    ctx.emit("number")
+    return lexAfterFilterValue
 }
 
 function lexStringValue(ctx: LexerContext): StateFn {
@@ -256,24 +377,6 @@ function lexStringValue(ctx: LexerContext): StateFn {
             lexError("invalid escape sequence: \\" + escapedSymbol)
         }
     }
-}
-
-function lexNumberValue(ctx: LexerContext): StateFn {
-    ctx.accept("+-")
-
-    let decimalOccured = ctx.accept(".")
-
-    ctx.acceptRun("0123456789")
-    if (ctx.accept(".")) {
-        if (decimalOccured) {
-            lexError("invalid number: " + ctx.current())
-        }
-
-        ctx.acceptRun("0123456789")
-    }
-
-    ctx.emit("number")
-    return lexAfterFilterValue
 }
 
 function lexAfterFilterValue(ctx: LexerContext): StateFn {

@@ -231,4 +231,63 @@ describe("parser", () => {
             ])
         ).toThrowErrorMatchingSnapshot()
     })
+
+    it("should parse dates", () => {
+        const result = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "eq", type: "filterEq" },
+            { str: "2020-12-12", type: "date" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" }
+        ])
+
+        expect(result).toMatchSnapshot()
+
+        const result2 = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "eq", type: "filterEq" },
+            { str: "2020-12-12T20:20:20.123Z", type: "dateTime" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" }
+        ])
+
+        expect(result2).toMatchSnapshot()
+
+        const result3 = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "eq", type: "filterEq" },
+            { str: "2020-12-12T20:20:20.123+01:00", type: "dateTime" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" }
+        ])
+
+        expect(result3).toMatchSnapshot()
+
+        const result4 = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "eq", type: "filterEq" },
+            { str: "2020-12-12T20:20:20.123-01:30", type: "dateTime" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" }
+        ])
+
+        expect(result4).toMatchSnapshot()
+    })
+
+    it("should not parse invalid dates", () => {
+        expect(() => {
+            parse([
+                { str: "path", type: "path" },
+                { str: "[", type: "filtersStart" },
+                { str: "eq", type: "filterEq" },
+                { str: "2020-35-12T20:20:20.123-01:30", type: "dateTime" },
+                { str: "]", type: "filtersEnd" },
+                { str: "", type: "eof" }
+            ])
+        }).toThrowErrorMatchingSnapshot()
+    })
 })

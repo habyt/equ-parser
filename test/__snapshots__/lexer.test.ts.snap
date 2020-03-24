@@ -29,6 +29,35 @@ Array [
 ]
 `;
 
+exports[`lexer should lex a date correctly 1`] = `
+Array [
+  Object {
+    "str": "path",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": "2020-01-01",
+    "type": "date",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": "",
+    "type": "eof",
+  },
+]
+`;
+
 exports[`lexer should lex booleans correctly 1`] = `
 Array [
   Object {
@@ -143,6 +172,64 @@ Array [
 ]
 `;
 
+exports[`lexer should lex decimal numbers correctly 1`] = `
+Array [
+  Object {
+    "str": "path",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": "-123.123",
+    "type": "number",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": "",
+    "type": "eof",
+  },
+]
+`;
+
+exports[`lexer should lex decimal numbers correctly 2`] = `
+Array [
+  Object {
+    "str": "path",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": ".123",
+    "type": "number",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": "",
+    "type": "eof",
+  },
+]
+`;
+
 exports[`lexer should lex expression bundles correctly 1`] = `
 Array [
   Object {
@@ -184,6 +271,35 @@ Array [
   Object {
     "str": "asdf",
     "type": "string",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": "",
+    "type": "eof",
+  },
+]
+`;
+
+exports[`lexer should lex offset date time 1`] = `
+Array [
+  Object {
+    "str": "path",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": "2020-01-01T12:00:00.000+01:00",
+    "type": "dateTime",
   },
   Object {
     "str": "]",
@@ -328,6 +444,53 @@ Array [
   },
 ]
 `;
+
+exports[`lexer should lex zulu date time 1`] = `
+Array [
+  Object {
+    "str": "path",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": "2020-01-01T12:00:00.000Z",
+    "type": "dateTime",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": "",
+    "type": "eof",
+  },
+]
+`;
+
+exports[`lexer should not lex dates with invalid formats 1`] = `"invalid date value: 2020-1"`;
+
+exports[`lexer should not lex incomplete date time values 1`] = `"invalid date time value: 2020-10-10T12"`;
+
+exports[`lexer should not lex incomplete date time values 2`] = `"invalid date time value: 2020-10-10T12:12"`;
+
+exports[`lexer should not lex incomplete date time values 3`] = `"invalid date time value: 2020-10-10T12:12:12"`;
+
+exports[`lexer should not lex incomplete date time values 4`] = `"invalid date time value: 2020-10-10T12:12:12.123"`;
+
+exports[`lexer should not lex incomplete date time values 5`] = `"invalid date value: 2020-10-10T12:12:12.123+; offset hour is not 2 digits long"`;
+
+exports[`lexer should not lex incomplete date time values 6`] = `"invalid date time value: 2020-10-10T12:12:12.123+12"`;
+
+exports[`lexer should not lex incomplete date time values 7`] = `"invalid date value: 2020-10-10T12:12:12.123+12:; offset minute is not 2 digits long"`;
+
+exports[`lexer should not lex incomplete dates 1`] = `"invalid date value: 2020-23"`;
 
 exports[`lexer should throw a parsing error on unended string values 1`] = `"expected string to end, but got asd"`;
 

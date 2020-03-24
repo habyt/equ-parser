@@ -31,7 +31,7 @@ type FilterOperatorType = "and" | "or" | "bundleStart" | "bundleEnd"
 type ExpressionType = keyof typeof filters
 type ExpressionOperatorType = "and" | "or" | "bundleStart" | "bundleEnd"
 
-type ValueType = "number" | "string" | "boolean"
+type ValueType = "number" | "string" | "boolean" | "date" | "dateTime"
 
 export type FilterOperator = {
     type: "operator"
@@ -50,7 +50,7 @@ export type ExpressionOperand = {
     type: "expressionOperand"
     expressionType: ExpressionType
     valueType: ValueType
-    value: string | number | boolean
+    value: string | number | boolean | Date
 }
 
 export type ExpressionOperator = {
@@ -228,6 +228,14 @@ function parseExpression(ctx: ParserContext): StateFn {
             valueType = "boolean"
             break
         }
+        case "date": {
+            valueType = "date"
+            break
+        }
+        case "dateTime": {
+            valueType = "dateTime"
+            break
+        }
         default:
             parseError(value)
     }
@@ -240,7 +248,7 @@ function parseExpression(ctx: ParserContext): StateFn {
         )
     }
 
-    let parsedValue: number | string | boolean = value.str
+    let parsedValue: number | string | boolean | Date = value.str
     if (value.type === "number") {
         parsedValue = Number(value.str)
     }
@@ -256,6 +264,13 @@ function parseExpression(ctx: ParserContext): StateFn {
             }
             default:
                 parseError("invalid boolean: " + value.str)
+        }
+    }
+
+    if (value.type === "date" || value.type === "dateTime") {
+        parsedValue = new Date(value.str)
+        if (isNaN(parsedValue.getTime())) {
+            parseError("invalid date value: " + value.str)
         }
     }
 
