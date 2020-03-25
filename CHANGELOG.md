@@ -1,3 +1,15 @@
+# v0.4.0 (Wed Mar 25 2020)
+
+#### 🚀 Enhancement
+
+- Add dates and date times [#8](https://github.com/homefully/equ-parser/pull/8) ([@mhlz](https://github.com/mhlz))
+
+#### Authors: 1
+
+- Mischa Holz ([@mhlz](https://github.com/mhlz))
+
+---
+
 # v0.3.2 (Tue Mar 24 2020)
 
 #### 🐛 Bug Fix
