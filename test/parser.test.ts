@@ -33,7 +33,7 @@ const example: Array<Item> = [
     { str: "eq", type: "filterEq" },
     { str: "15", type: "number" },
     { str: "]", type: "filtersEnd" },
-    { str: "", type: "eof" }
+    { str: "", type: "eof" },
 ]
 
 describe("parser", () => {
@@ -58,7 +58,7 @@ describe("parser", () => {
             parse([
                 { str: "", type: "path" },
                 { str: "test", type: "filtersStart" },
-                { str: "test", type: "filtersEnd" }
+                { str: "test", type: "filtersEnd" },
             ])
         ).toThrowErrorMatchingSnapshot()
     })
@@ -78,7 +78,7 @@ describe("parser", () => {
             { str: "bdf", type: "string" },
             { str: "]", type: "filtersEnd" },
             { str: ")", type: "bundleEnd" },
-            { str: "", type: "eof" }
+            { str: "", type: "eof" },
         ]
 
         const result = parse(bundleExample)
@@ -89,7 +89,7 @@ describe("parser", () => {
         expect(() =>
             parse([
                 { str: "test", type: "path" },
-                { str: "bla", type: "error" }
+                { str: "bla", type: "error" },
             ])
         ).toThrowErrorMatchingSnapshot()
     })
@@ -101,7 +101,7 @@ describe("parser", () => {
             { str: "gte", type: "filterGte" },
             { str: "value", type: "string" },
             { str: "]", type: "filtersEnd" },
-            { str: "", type: "eof" }
+            { str: "", type: "eof" },
         ])
 
         expect(result).toMatchSnapshot()
@@ -114,7 +114,7 @@ describe("parser", () => {
             { str: "neq", type: "filterNeq" },
             { str: "value", type: "string" },
             { str: "]", type: "filtersEnd" },
-            { str: "", type: "eof" }
+            { str: "", type: "eof" },
         ])
 
         expect(result).toMatchSnapshot()
@@ -128,7 +128,7 @@ describe("parser", () => {
                 { str: "ex", type: "filterEx" },
                 { str: "1", type: "boolean" },
                 { str: "]", type: "filtersEnd" },
-                { str: "", type: "eof" }
+                { str: "", type: "eof" },
             ])
         ).toThrowErrorMatchingSnapshot()
     })
@@ -140,7 +140,7 @@ describe("parser", () => {
             { str: "ex", type: "filterEx" },
             { str: "false", type: "boolean" },
             { str: "]", type: "filtersEnd" },
-            { str: "", type: "eof" }
+            { str: "", type: "eof" },
         ])
 
         expect(result).toMatchSnapshot()
@@ -153,7 +153,7 @@ describe("parser", () => {
             { str: "rgx", type: "filterRgx" },
             { str: "value", type: "string" },
             { str: "]", type: "filtersEnd" },
-            { str: "", type: "eof" }
+            { str: "", type: "eof" },
         ])
 
         expect(result).toMatchSnapshot()
@@ -166,7 +166,7 @@ describe("parser", () => {
             { str: "lte", type: "filterLte" },
             { str: "value", type: "string" },
             { str: "]", type: "filtersEnd" },
-            { str: "", type: "eof" }
+            { str: "", type: "eof" },
         ])
 
         expect(result).toMatchSnapshot()
@@ -180,7 +180,7 @@ describe("parser", () => {
                 { str: "lte", type: "filterLte" },
                 { str: "value", type: "error" },
                 { str: "]", type: "filtersEnd" },
-                { str: "", type: "eof" }
+                { str: "", type: "eof" },
             ])
         ).toThrowErrorMatchingSnapshot()
     })
@@ -198,7 +198,7 @@ describe("parser", () => {
             { str: "lt", type: "filterLt" },
             { str: "asdf", type: "string" },
             { str: "]", type: "filtersEnd" },
-            { str: "", type: "eof" }
+            { str: "", type: "eof" },
         ])
 
         expect(result).toMatchSnapshot()
@@ -214,7 +214,7 @@ describe("parser", () => {
                 { str: "|", type: "or" },
                 { str: "gt", type: "filterGt" },
                 { str: "asdf", type: "string" },
-                { str: "", type: "eof" }
+                { str: "", type: "eof" },
             ])
         ).toThrowErrorMatchingSnapshot()
     })
@@ -227,8 +227,67 @@ describe("parser", () => {
                 { str: "eq", type: "filterEq" },
                 { str: "asd", type: "string" },
                 { str: "]", type: "filtersEnd" },
-                { str: "", type: "error" }
+                { str: "", type: "error" },
             ])
         ).toThrowErrorMatchingSnapshot()
+    })
+
+    it("should parse dates", () => {
+        const result = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "eq", type: "filterEq" },
+            { str: "2020-12-12", type: "date" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" },
+        ])
+
+        expect(result).toMatchSnapshot()
+
+        const result2 = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "eq", type: "filterEq" },
+            { str: "2020-12-12T20:20:20.123Z", type: "dateTime" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" },
+        ])
+
+        expect(result2).toMatchSnapshot()
+
+        const result3 = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "eq", type: "filterEq" },
+            { str: "2020-12-12T20:20:20.123+01:00", type: "dateTime" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" },
+        ])
+
+        expect(result3).toMatchSnapshot()
+
+        const result4 = parse([
+            { str: "path", type: "path" },
+            { str: "[", type: "filtersStart" },
+            { str: "eq", type: "filterEq" },
+            { str: "2020-12-12T20:20:20.123-01:30", type: "dateTime" },
+            { str: "]", type: "filtersEnd" },
+            { str: "", type: "eof" },
+        ])
+
+        expect(result4).toMatchSnapshot()
+    })
+
+    it("should not parse invalid dates", () => {
+        expect(() => {
+            parse([
+                { str: "path", type: "path" },
+                { str: "[", type: "filtersStart" },
+                { str: "eq", type: "filterEq" },
+                { str: "2020-35-12T20:20:20.123-01:30", type: "dateTime" },
+                { str: "]", type: "filtersEnd" },
+                { str: "", type: "eof" },
+            ])
+        }).toThrowErrorMatchingSnapshot()
     })
 })

@@ -70,4 +70,62 @@ describe("lexer", () => {
             lex("path[eq:123]:path[eq:123]")
         ).toThrowErrorMatchingSnapshot()
     })
+
+    it("should lex decimal numbers correctly", () => {
+        const result = lex("path[eq:-123.123]")
+        const result2 = lex("path[eq:.123]")
+
+        expect(result).toMatchSnapshot()
+        expect(result2).toMatchSnapshot()
+    })
+
+    it("should lex a date correctly", () => {
+        const result = lex("path[eq:2020-01-01]")
+
+        expect(result).toMatchSnapshot()
+    })
+
+    it("should lex zulu date time", () => {
+        const result = lex("path[eq:2020-01-01T12:00:00.000Z]")
+
+        expect(result).toMatchSnapshot()
+    })
+
+    it("should lex offset date time", () => {
+        const result = lex("path[eq:2020-01-01T12:00:00.000+01:00]")
+
+        expect(result).toMatchSnapshot()
+    })
+
+    it("should not lex dates with invalid formats", () => {
+        expect(() => lex("path[eq:2020-1-1]")).toThrowErrorMatchingSnapshot()
+    })
+
+    it("should not lex incomplete dates", () => {
+        expect(() => lex("path[eq:2020-23]")).toThrowErrorMatchingSnapshot()
+    })
+
+    it("should not lex incomplete date time values", () => {
+        expect(() =>
+            lex("path[eq:2020-10-10T12]")
+        ).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12:12]")
+        ).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12:12:12]")
+        ).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12:12:12.123]")
+        ).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12:12:12.123+]")
+        ).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12:12:12.123+12]")
+        ).toThrowErrorMatchingSnapshot()
+        expect(() =>
+            lex("path[eq:2020-10-10T12:12:12.123+12:]")
+        ).toThrowErrorMatchingSnapshot()
+    })
 })

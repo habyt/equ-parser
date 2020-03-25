@@ -31,7 +31,7 @@ type FilterOperatorType = "and" | "or" | "bundleStart" | "bundleEnd"
 type ExpressionType = keyof typeof filters
 type ExpressionOperatorType = "and" | "or" | "bundleStart" | "bundleEnd"
 
-type ValueType = "number" | "string" | "boolean"
+type ValueType = "number" | "string" | "boolean" | "date" | "dateTime"
 
 export type FilterOperator = {
     type: "operator"
@@ -50,7 +50,7 @@ export type ExpressionOperand = {
     type: "expressionOperand"
     expressionType: ExpressionType
     valueType: ValueType
-    value: string | number | boolean
+    value: string | number | boolean | Date
 }
 
 export type ExpressionOperator = {
@@ -137,7 +137,7 @@ function parsePath(ctx: ParserContext): StateFn {
         ctx.pushFilterItem({
             type: "operand",
             path: next.str,
-            expressions: []
+            expressions: [],
         })
 
         return parseFiltersStart
@@ -149,7 +149,7 @@ function parsePath(ctx: ParserContext): StateFn {
 function parseFilterBundleStart(ctx: ParserContext): StateFn {
     ctx.filterOperatorStack.push({
         type: "operator",
-        operator: "bundleStart"
+        operator: "bundleStart",
     })
 
     return parsePath
@@ -228,6 +228,14 @@ function parseExpression(ctx: ParserContext): StateFn {
             valueType = "boolean"
             break
         }
+        case "date": {
+            valueType = "date"
+            break
+        }
+        case "dateTime": {
+            valueType = "dateTime"
+            break
+        }
         default:
             parseError(value)
     }
@@ -240,7 +248,7 @@ function parseExpression(ctx: ParserContext): StateFn {
         )
     }
 
-    let parsedValue: number | string | boolean = value.str
+    let parsedValue: number | string | boolean | Date = value.str
     if (value.type === "number") {
         parsedValue = Number(value.str)
     }
@@ -259,11 +267,18 @@ function parseExpression(ctx: ParserContext): StateFn {
         }
     }
 
+    if (value.type === "date" || value.type === "dateTime") {
+        parsedValue = new Date(value.str)
+        if (isNaN(parsedValue.getTime())) {
+            parseError("invalid date value: " + value.str)
+        }
+    }
+
     ctx.pushExpressionItem({
         type: "expressionOperand",
         expressionType: expressionOperator,
         valueType,
-        value: parsedValue
+        value: parsedValue,
     })
 
     return parseAfterExpression
@@ -272,7 +287,7 @@ function parseExpression(ctx: ParserContext): StateFn {
 function parseExpressionBundleStart(ctx: ParserContext): StateFn {
     ctx.expressionOperatorStack.push({
         type: "expressionOperator",
-        operator: "bundleStart"
+        operator: "bundleStart",
     })
 
     return parseExpression
@@ -294,7 +309,7 @@ function parseAfterExpression(ctx: ParserContext): StateFn {
     if (next.type === "or" || next.type === "and") {
         const expressionOperator: ExpressionOperator = {
             type: "expressionOperator",
-            operator: next.type
+            operator: next.type,
         }
 
         let currentTopExpression = ctx.topExpressionOperator()
@@ -341,7 +356,7 @@ function parseAfterFilter(ctx: ParserContext): StateFn {
     if (next.type === "and" || next.type === "or") {
         const filterOperator: FilterOperator = {
             type: "operator",
-            operator: next.type
+            operator: next.type,
         }
 
         let currentTopFilter = ctx.topFilterOperator()

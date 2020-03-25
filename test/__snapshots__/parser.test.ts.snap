@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`parser should not parse invalid dates 1`] = `"invalid date value: 2020-35-12T20:20:20.123-01:30"`;
+
 exports[`parser should parse bundles correctly 1`] = `
 Array [
   Object {
@@ -62,6 +64,74 @@ Array [
       Object {
         "operator": "and",
         "type": "expressionOperator",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+]
+`;
+
+exports[`parser should parse dates 1`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": 2020-12-12T00:00:00.000Z,
+        "valueType": "date",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+]
+`;
+
+exports[`parser should parse dates 2`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": 2020-12-12T20:20:20.123Z,
+        "valueType": "dateTime",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+]
+`;
+
+exports[`parser should parse dates 3`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": 2020-12-12T19:20:20.123Z,
+        "valueType": "dateTime",
+      },
+    ],
+    "path": "path",
+    "type": "operand",
+  },
+]
+`;
+
+exports[`parser should parse dates 4`] = `
+Array [
+  Object {
+    "expressions": Array [
+      Object {
+        "expressionType": "eq",
+        "type": "expressionOperand",
+        "value": 2020-12-12T21:50:20.123Z,
+        "valueType": "dateTime",
       },
     ],
     "path": "path",
