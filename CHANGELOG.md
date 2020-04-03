@@ -1,3 +1,16 @@
+# v0.4.1 (Fri Apr 03 2020)
+
+#### 🐛 Bug Fix
+
+- Bump jest from 25.1.0 to 25.2.4 [#11](https://github.com/homefully/equ-parser/pull/11) ([@dependabot-preview[bot]](https://github.com/dependabot-preview[bot]) [@mhlz](https://github.com/mhlz))
+
+#### Authors: 2
+
+- [@dependabot-preview[bot]](https://github.com/dependabot-preview[bot])
+- Mischa Holz ([@mhlz](https://github.com/mhlz))
+
+---
+
 # v0.4.0 (Wed Mar 25 2020)
 
 #### 🚀 Enhancement
