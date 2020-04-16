@@ -1,3 +1,15 @@
+# v0.4.8 (Thu Apr 16 2020)
+
+#### 🐛 Bug Fix
+
+- Bump @types/jest from 25.1.4 to 25.2.1 [#15](https://github.com/homefully/equ-parser/pull/15) ([@dependabot-preview[bot]](https://github.com/dependabot-preview[bot]))
+
+#### Authors: 1
+
+- [@dependabot-preview[bot]](https://github.com/dependabot-preview[bot])
+
+---
+
 # v0.4.7 (Thu Apr 16 2020)
 
 #### 🐛 Bug Fix
