@@ -1,3 +1,15 @@
+# v0.4.6 (Thu Apr 16 2020)
+
+#### 🐛 Bug Fix
+
+- Bump prettier from 2.0.2 to 2.0.4 [#18](https://github.com/homefully/equ-parser/pull/18) ([@dependabot-preview[bot]](https://github.com/dependabot-preview[bot]))
+
+#### Authors: 1
+
+- [@dependabot-preview[bot]](https://github.com/dependabot-preview[bot])
+
+---
+
 # v0.4.5 (Thu Apr 16 2020)
 
 #### 🐛 Bug Fix
