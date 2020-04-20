@@ -1,3 +1,15 @@
+# v0.4.9 (Mon Apr 20 2020)
+
+#### 🐛 Bug Fix
+
+- Upgrade dependencies [#24](https://github.com/homefully/equ-parser/pull/24) ([@mhlz](https://github.com/mhlz))
+
+#### Authors: 1
+
+- Mischa Holz ([@mhlz](https://github.com/mhlz))
+
+---
+
 # v0.4.8 (Thu Apr 16 2020)
 
 #### 🐛 Bug Fix
