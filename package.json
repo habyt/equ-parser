@@ -22,13 +22,13 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^25.1.4",
+    "@types/jest": "^25.2.3",
     "auto": "^9.36.2",
-    "jest": "^25.5.4",
+    "jest": "^26.0.1",
     "jest-github-actions-reporter": "^1.0.2",
     "prettier": "^2.0.5",
-    "ts-jest": "^25.4.0",
-    "typescript": "^3.8.3"
+    "ts-jest": "^26.0.0",
+    "typescript": "^3.9.3"
   },
   "jest": {
     "preset": "ts-jest",
