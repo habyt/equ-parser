@@ -23,10 +23,10 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^25.1.4",
-    "auto": "^9.28.0",
-    "jest": "^25.4.0",
+    "auto": "^9.36.2",
+    "jest": "^25.5.4",
     "jest-github-actions-reporter": "^1.0.2",
-    "prettier": "^2.0.2",
+    "prettier": "^2.0.5",
     "ts-jest": "^25.4.0",
     "typescript": "^3.8.3"
   },
