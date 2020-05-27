@@ -1,3 +1,15 @@
+# v0.4.10 (Wed May 27 2020)
+
+#### 🐛 Bug Fix
+
+- :arrow_up: [#28](https://github.com/homefully/equ-parser/pull/28) ([@reckter](https://github.com/reckter))
+
+#### Authors: 1
+
+- Hannes Güdelhöfer ([@reckter](https://github.com/reckter))
+
+---
+
 # v0.4.9 (Mon Apr 20 2020)
 
 #### 🐛 Bug Fix
