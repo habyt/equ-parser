@@ -1,3 +1,15 @@
+# v0.4.11 (Mon Jun 15 2020)
+
+#### 🐛 Bug Fix
+
+- Bump ts-jest from 26.0.0 to 26.1.0 [#29](https://github.com/homefully/equ-parser/pull/29) ([@dependabot-preview[bot]](https://github.com/dependabot-preview[bot]))
+
+#### Authors: 1
+
+- [@dependabot-preview[bot]](https://github.com/dependabot-preview[bot])
+
+---
+
 # v0.4.10 (Wed May 27 2020)
 
 #### 🐛 Bug Fix
