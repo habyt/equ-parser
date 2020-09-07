@@ -14,6 +14,8 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
     steps:
       - uses: actions/checkout@main
+        with:
+          token: ${{secrets.PUBLIC_GH_BOT_TOKEN}}
       - run: git fetch --prune --unshallow
       - uses: actions/setup-node@main
         with:
