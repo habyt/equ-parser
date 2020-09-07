@@ -22,7 +22,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "25.2.3",
+    "@types/jest": "26.0.13",
     "auto": "9.52.0",
     "jest": "26.4.2",
     "jest-github-actions-reporter": "1.0.2",
