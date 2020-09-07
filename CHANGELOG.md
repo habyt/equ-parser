@@ -1,3 +1,15 @@
+# v0.4.21 (Mon Sep 07 2020)
+
+#### 🐛 Bug Fix
+
+- Update dependency @types/jest to v26 [#56](https://github.com/homefully/equ-parser/pull/56) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- WhiteSource Renovate ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v0.4.20 (Mon Sep 07 2020)
 
 #### 🐛 Bug Fix
