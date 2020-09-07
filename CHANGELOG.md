@@ -1,3 +1,16 @@
+# v0.4.16 (Mon Sep 07 2020)
+
+#### 🐛 Bug Fix
+
+- Pin dependencies [#51](https://github.com/homefully/equ-parser/pull/51) ([@renovate-bot](https://github.com/renovate-bot) [@renovate[bot]](https://github.com/renovate[bot]))
+
+#### Authors: 2
+
+- [@renovate[bot]](https://github.com/renovate[bot])
+- WhiteSource Renovate ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v0.4.13 (Mon Sep 07 2020)
 
 #### 🐛 Bug Fix
