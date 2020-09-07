@@ -1,6 +1,3 @@
 {
-  "extends": ["github>homefully/renovate", ":pinVersions"],
-  "encrypted": {
-    "npmrc": "OlQMcSTGak2H39fT6hbTxo5pm6/orOZucaYt0eYQsJqqgPyXlHJ7rTV+/aI+SpCbBTdv6ZQvzCoRAd8agLIUNlHk+CICNOYD8e1XLm00ullHUJ2h8x7HAby+dDogHCqA45JPxV0kGPRtsz+xwm0UfWfYKWWIcUfNHvvaRdL8GE9AIM4LKdt2520Nwe3M7QNa4rFgKh/9Oi06gcb76QixPQ/s8WeJN+Qfo5lQVdEGE0ZBq/lXTWroe3WXJLpbWGQqIOxua+oF3cDfTM8Ny6vQIKqCReekxNGpUM0VrY8jB6r91y9/M2L5/6Ay5QDBcT+StdOWzBZdz9GdcVBY2X9J/g=="
-  }
+  "extends": ["github>homefully/renovate", ":pinVersions"]
 }
