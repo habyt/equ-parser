@@ -1,3 +1,19 @@
+# v0.4.13 (Mon Sep 07 2020)
+
+#### 🐛 Bug Fix
+
+- Update workflows [#48](https://github.com/homefully/equ-parser/pull/48) ([@mhlz](https://github.com/mhlz))
+
+#### ⚠️ Pushed to `master`
+
+- Remove unnecessary secret ([@mhlz](https://github.com/mhlz))
+
+#### Authors: 1
+
+- Mischa Holz ([@mhlz](https://github.com/mhlz))
+
+---
+
 # v0.4.12 (Mon Jun 15 2020)
 
 #### 🐛 Bug Fix
