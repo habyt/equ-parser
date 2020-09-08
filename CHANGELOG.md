@@ -1,3 +1,15 @@
+# v0.5.1 (Tue Sep 08 2020)
+
+#### ⚠️ Pushed to `master`
+
+- Fetch tags as well during release ([@mhlz](https://github.com/mhlz))
+
+#### Authors: 1
+
+- Mischa Holz ([@mhlz](https://github.com/mhlz))
+
+---
+
 # v0.5.0 (Tue Sep 08 2020)
 
 #### 🚀 Enhancement
