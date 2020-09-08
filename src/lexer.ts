@@ -54,7 +54,6 @@ const tokenValidPath =
 const tokenValidOperator = "abcdefghijklmnopqrstuvwxyz"
 const tokenValidNumberStart = "+-.0123456789"
 
-const tokenValidDateTime = "-0123456789T:+Z"
 const tokenValidDigits = "0123456789"
 
 const tokenTrue = "true"
@@ -170,6 +169,13 @@ class LexerContext {
 
     assertLength(length: number, error: string) {
         if (this.pos - this.start !== length) {
+            lexError(error)
+        }
+    }
+
+    assertLengthBetween(min: number, max: number, error: string) {
+        const length = this.pos - this.start
+        if (!(min <= length && length <= max)) {
             lexError(error)
         }
     }
@@ -336,24 +342,11 @@ function lexRestOfTime(ctx: LexerContext): StateFn {
 
     // offset hour
     ctx.acceptRun(tokenValidDigits)
-    ctx.assertLength(
-        26,
-        "invalid date value: " +
-            ctx.current() +
-            "; offset hour is not 2 digits long"
-    )
-    if (!ctx.accept(":")) {
-        lexError("invalid date time value: " + ctx.current())
-    }
+    ctx.accept(":")
 
     // offset minute
     ctx.acceptRun(tokenValidDigits)
-    ctx.assertLength(
-        29,
-        "invalid date value: " +
-            ctx.current() +
-            "; offset minute is not 2 digits long"
-    )
+    ctx.assertLengthBetween(28, 29, "invalid date time value: " + ctx.current())
     ctx.emit("dateTime")
 
     return lexAfterFilterValue

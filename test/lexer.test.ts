@@ -97,6 +97,12 @@ describe("lexer", () => {
         expect(result).toMatchSnapshot()
     })
 
+    it("should lex offset date time without colon", () => {
+        const result = lex("path[eq:2020-01-01T12:00:00.000+0100]")
+
+        expect(result).toMatchSnapshot()
+    })
+
     it("should not lex dates with invalid formats", () => {
         expect(() => lex("path[eq:2020-1-1]")).toThrowErrorMatchingSnapshot()
     })

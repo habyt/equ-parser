@@ -312,6 +312,35 @@ Array [
 ]
 `;
 
+exports[`lexer should lex offset date time without colon 1`] = `
+Array [
+  Object {
+    "str": "path",
+    "type": "path",
+  },
+  Object {
+    "str": "[",
+    "type": "filtersStart",
+  },
+  Object {
+    "str": "eq",
+    "type": "filterEq",
+  },
+  Object {
+    "str": "2020-01-01T12:00:00.000+0100",
+    "type": "dateTime",
+  },
+  Object {
+    "str": "]",
+    "type": "filtersEnd",
+  },
+  Object {
+    "str": "",
+    "type": "eof",
+  },
+]
+`;
+
 exports[`lexer should lex the example correctly 1`] = `
 Array [
   Object {
@@ -484,11 +513,11 @@ exports[`lexer should not lex incomplete date time values 3`] = `"invalid date t
 
 exports[`lexer should not lex incomplete date time values 4`] = `"invalid date time value: 2020-10-10T12:12:12.123"`;
 
-exports[`lexer should not lex incomplete date time values 5`] = `"invalid date value: 2020-10-10T12:12:12.123+; offset hour is not 2 digits long"`;
+exports[`lexer should not lex incomplete date time values 5`] = `"invalid date time value: 2020-10-10T12:12:12.123+"`;
 
 exports[`lexer should not lex incomplete date time values 6`] = `"invalid date time value: 2020-10-10T12:12:12.123+12"`;
 
-exports[`lexer should not lex incomplete date time values 7`] = `"invalid date value: 2020-10-10T12:12:12.123+12:; offset minute is not 2 digits long"`;
+exports[`lexer should not lex incomplete date time values 7`] = `"invalid date time value: 2020-10-10T12:12:12.123+12:"`;
 
 exports[`lexer should not lex incomplete dates 1`] = `"invalid date value: 2020-23"`;
 
