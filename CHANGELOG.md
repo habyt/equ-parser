@@ -1,3 +1,15 @@
+# v0.5.0 (Tue Sep 08 2020)
+
+#### 🚀 Enhancement
+
+- Accept date time offsets without a colon as well [#58](https://github.com/homefully/equ-parser/pull/58) ([@mhlz](https://github.com/mhlz))
+
+#### Authors: 1
+
+- Mischa Holz ([@mhlz](https://github.com/mhlz))
+
+---
+
 # v0.4.22 (Tue Sep 08 2020)
 
 #### 🐛 Bug Fix
