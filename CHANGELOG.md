@@ -1,3 +1,15 @@
+# v0.5.3 (Sat Sep 19 2020)
+
+#### 🐛 Bug Fix
+
+- Update dependency prettier to v2.1.2 [#60](https://github.com/homefully/equ-parser/pull/60) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- WhiteSource Renovate ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v0.5.2 (Sat Sep 12 2020)
 
 #### 🐛 Bug Fix
