@@ -1,3 +1,15 @@
+# v0.5.7 (Fri Oct 02 2020)
+
+#### 🐛 Bug Fix
+
+- Update dependency ts-jest to v26.4.1 [#64](https://github.com/homefully/equ-parser/pull/64) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- WhiteSource Renovate ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v0.5.6 (Wed Sep 23 2020)
 
 #### 🐛 Bug Fix
