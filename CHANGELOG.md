@@ -1,3 +1,15 @@
+# v0.5.11 (Wed Oct 14 2020)
+
+#### 🐛 Bug Fix
+
+- Update dependency jest to v26.5.3 [#68](https://github.com/homefully/equ-parser/pull/68) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- WhiteSource Renovate ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v0.5.10 (Mon Oct 12 2020)
 
 #### 🐛 Bug Fix
