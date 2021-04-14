@@ -1,3 +1,16 @@
+# v0.5.17 (Wed Apr 14 2021)
+
+#### 🐛 Bug Fix
+
+- Update actions/checkout action to v2 [#71](https://github.com/homefully/equ-parser/pull/71) ([@renovate-bot](https://github.com/renovate-bot) [@renovate[bot]](https://github.com/renovate[bot]))
+
+#### Authors: 2
+
+- [@renovate[bot]](https://github.com/renovate[bot])
+- WhiteSource Renovate ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v0.5.16 (Wed Apr 14 2021)
 
 #### 🐛 Bug Fix
