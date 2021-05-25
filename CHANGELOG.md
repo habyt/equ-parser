@@ -1,3 +1,15 @@
+# v0.5.26 (Tue May 25 2021)
+
+#### ⚠️ Pushed to `master`
+
+- Update dependency auto to v10.29.0 ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- WhiteSource Renovate ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v0.5.25 (Tue May 18 2021)
 
 #### 🐛 Bug Fix
