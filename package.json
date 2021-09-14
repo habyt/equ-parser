@@ -1,6 +1,6 @@
 {
   "name": "@equ-lang/parser",
-  "version": "0.5.36",
+  "version": "0.5.37",
   "description": "",
   "main": "build/index.js",
   "files": [
