@@ -1,3 +1,15 @@
+# v0.5.40 (Wed Oct 13 2021)
+
+#### 🐛 Bug Fix
+
+- Update dependency typescript to v4.4.4 [#122](https://github.com/homefully/equ-parser/pull/122) ([@renovate-bot](https://github.com/renovate-bot))
+
+#### Authors: 1
+
+- WhiteSource Renovate ([@renovate-bot](https://github.com/renovate-bot))
+
+---
+
 # v0.5.39 (Tue Oct 05 2021)
 
 #### 🐛 Bug Fix
